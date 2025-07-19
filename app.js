@@ -1,5 +1,10 @@
 const express = require("express");
+const { connectToMongoDB } = require("./db");
+require("dotenv").config();
 const app = express();
+const PORT = process.env.PORT;
+
+connectToMongoDB();
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
@@ -17,6 +22,6 @@ app.post("/shorten", (req, res) => {
   res.render("index", { shortenedUrl, error: null });
 });
 
-app.listen(3000, () => {
-  console.log("Server is running on http://localhost:3000");
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
