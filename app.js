@@ -13,14 +13,7 @@ app.get("/", (req, res) => {
   res.render("index", { shortenedUrl: null, error: null });
 });
 
-app.post("/shorten", (req, res) => {
-  const { url } = req.body;
-  // Here you would typically shorten the URL and return it
-  const shortenedUrl = `http://short.url/${Math.random()
-    .toString(36)
-    .substring(7)}`;
-  res.render("index", { shortenedUrl, error: null });
-});
+app.use("/shorten", require("./routes/shorten"));
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
