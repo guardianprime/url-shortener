@@ -2,6 +2,8 @@ const express = require("express");
 const { connectToMongoDB } = require("./db");
 const EnsureLoggedIn = require("connect-ensure-login");
 const passport = require("passport");
+const session = require("express-session");
+const userModel = require("./models/userModel");
 require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT;
@@ -23,10 +25,10 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.use(adminModel.createStrategy());
+passport.use(userModel.createStrategy());
 
-passport.serializeUser(adminModel.serializeUser());
-passport.deserializeUser(adminModel.deserializeUser());
+passport.serializeUser(userModel.serializeUser());
+passport.deserializeUser(userModel.deserializeUser());
 
 app.get("/", EnsureLoggedIn.ensureLoggedIn(), (req, res) => {
   res.render("index", { shortenedUrl: null, error: null });
