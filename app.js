@@ -34,7 +34,19 @@ app.get("/", EnsureLoggedIn.ensureLoggedIn(), (req, res) => {
   res.render("index", { shortenedUrl: null, error: null });
 });
 
-app.use("/shorten", require("./routes/shorten"));
+app.use(
+  "/shorten",
+  EnsureLoggedIn.ensureLoggedIn(),
+  require("./routes/shorten")
+);
+
+app.get("/login", (req, res) => {
+  res.render("login", { error: null });
+});
+
+app.get("/signup", (req, res) => {
+  res.render("signup", { error: null });
+});
 
 app.post("/signup", (req, res) => {
   userModel.register(

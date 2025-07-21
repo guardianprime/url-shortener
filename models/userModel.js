@@ -11,11 +11,6 @@ const userModel = new mongoose.Schema({
     unique: true, // No duplicate usernames
     trim: true,
   },
-  password: {
-    type: String,
-    required: true,
-    // Note: Always store a hashed password!
-  },
   createdAt: {
     type: Date,
     default: Date.now,

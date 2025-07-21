@@ -11,11 +11,11 @@ const UrlSchema = new mongoose.Schema({
   shortCode: {
     type: String,
     required: true,
-    unique: true, // Every short code must be unique
+    unique: true, // ✅ THIS is the unique part
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User", // Links to the User collection
+    ref: "User",
     required: true,
   },
   createdAt: {
