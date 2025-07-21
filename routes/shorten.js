@@ -48,4 +48,26 @@ shortenRouter.get("/user/:id", async (req, res) => {
   res.render("index", { shortenedUrl: null, error: null, originalUrl });
 });
 
+shortenRouter.get("/urls", async (req, res) => {
+  if (!req.user || !req.user._id) {
+    return res.render("urls", {
+      urls: [],
+      error: "You must be logged in to view your URLs.",
+    });
+  }
+  try {
+    const userUrls = await urlModel.find({ userId: req.user._id });
+    return res.render("urls", {
+      urls: userUrls,
+      error: null,
+    });
+  } catch (err) {
+    console.error("Error fetching user URLs:", err);
+    return res.render("urls", {
+      urls: [],
+      error: "Failed to retrieve URLs.",
+    });
+  }
+});
+
 module.exports = shortenRouter;
