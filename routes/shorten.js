@@ -11,7 +11,7 @@ shortenRouter.post("/", async (req, res) => {
   }
   const { url } = req.body;
   const shortCode = nanoid(7);
-  const shortenedUrl = `http://short.url/${shortCode}`;
+  const shortenedUrl = `${req.protocol}://${req.get("host")}/${shortCode}`;
 
   try {
     await urlModel.create({
@@ -60,6 +60,8 @@ shortenRouter.get("/urls", async (req, res) => {
     const userUrls = await urlModel.find({ userId: req.user._id });
     return res.render("urls", {
       urls: userUrls,
+      protocol: req.protocol,
+      host: req.get("host"),
       error: null,
     });
   } catch (err) {

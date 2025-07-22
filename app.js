@@ -104,7 +104,7 @@ app.post("/logout", (req, res) => {
   });
 });
 
-app.get("/short.url/:shortCode", async (req, res) => {
+app.get("/:shortCode", async (req, res) => {
   const { shortCode } = req.params;
 
   try {

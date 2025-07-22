@@ -16,9 +16,9 @@
       <% urls.forEach(url => { %>
       <li>
         <a href="<%= url.originalUrl %>"><%= url.originalUrl %></a> →
-        <a href="http://short.url/<%= url.shortCode %>"
-          >http://short.url/<%= url.shortCode %></a
-        >
+        <a href="<%= protocol %>://<%= host %>/<%= url.shortCode %>">
+          <%= protocol %>://<%= host %>/<%= url.shortCode %>
+        </a>
         — <%= url.clicks %> clicks
       </li>
       <% }) %>
