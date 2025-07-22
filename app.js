@@ -4,6 +4,7 @@ const EnsureLoggedIn = require("connect-ensure-login");
 const passport = require("passport");
 const session = require("express-session");
 const userModel = require("./models/userModel");
+const urlModel = require("./models/urlModel");
 require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT;
@@ -82,6 +83,29 @@ app.post("/logout", (req, res) => {
     }
     res.redirect("/");
   });
+});
+
+app.get("/short.url/:shortCode", async (req, res) => {
+  const { shortCode } = req.params;
+
+  try {
+    const urlDoc = await urlModel.findOne({ shortCode });
+
+    if (urlDoc) {
+      //  increment clicks
+      urlDoc.clicks++;
+      await urlDoc.save();
+
+      // Redirect to original URL
+      return res.redirect(urlDoc.originalUrl);
+    } else {
+      // Short code not found
+      return res.status(404).send("Short URL not found");
+    }
+  } catch (err) {
+    console.error("Error during redirect:", err);
+    return res.status(500).send("Server error");
+  }
 });
 
 app.listen(PORT, () => {

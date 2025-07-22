@@ -70,27 +70,4 @@ shortenRouter.get("/urls", async (req, res) => {
   }
 });
 
-shortenRouter.get("/:shortCode", async (req, res) => {
-  const { shortCode } = req.params;
-
-  try {
-    const urlDoc = await urlModel.findOne({ shortCode });
-
-    if (urlDoc) {
-      //  increment clicks
-      urlDoc.clicks++;
-      await urlDoc.save();
-
-      // Redirect to original URL
-      return res.redirect(urlDoc.originalUrl);
-    } else {
-      // Short code not found
-      return res.status(404).send("Short URL not found");
-    }
-  } catch (err) {
-    console.error("Error during redirect:", err);
-    return res.status(500).send("Server error");
-  }
-});
-
 module.exports = shortenRouter;
