@@ -53,27 +53,46 @@ app.post("/signup", (req, res) => {
   userModel.register(
     new userModel({ username: req.body.username }),
     req.body.password,
-    (err) => {
+    (err, user) => {
       if (err) {
-        console.error("Error registering user:", err);
-        return res.status(500).send("Error registering user");
+        let errorMsg = "Error registering user.";
+        if (err.name === "UserExistsError") {
+          errorMsg = "A user with that username already exists.";
+        } else if (err.name === "MissingUsernameError") {
+          errorMsg = "No username was given.";
+        } else if (err.name === "MissingPasswordError") {
+          errorMsg = "No password was given.";
+        }
+        return res.render("signup", { error: errorMsg });
       } else {
-        // User registered successfully
         passport.authenticate("local")(req, res, () => {
-          res.redirect(`/shorten/user/${req.user.id}`);
+          res.redirect("/");
         });
       }
     }
   );
 });
 
-app.post(
-  "/login",
-  passport.authenticate("local", { failureRedirect: "/login" }),
-  (req, res) => {
-    res.redirect("/");
-  }
-);
+app.post("/login", (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      let errorMsg = "Password or username are incorrect";
+      if (info && info.message) {
+        errorMsg = info.message;
+      }
+      return res.render("login", { error: errorMsg });
+    }
+    req.logIn(user, (err) => {
+      if (err) {
+        return next(err);
+      }
+      return res.redirect("/");
+    });
+  })(req, res, next);
+});
 
 app.post("/logout", (req, res) => {
   req.logout((err) => {
