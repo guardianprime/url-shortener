@@ -1,5 +1,6 @@
 const shortenRouter = require("express").Router();
 const urlModel = require("../models/urlModel");
+const { nanoid } = require("nanoid");
 
 shortenRouter.post("/", async (req, res) => {
   if (!req.user || !req.user._id) {
@@ -9,7 +10,7 @@ shortenRouter.post("/", async (req, res) => {
     });
   }
   const { url } = req.body;
-  const shortCode = Math.random().toString(36).substring(7);
+  const shortCode = nanoid(7);
   const shortenedUrl = `http://short.url/${shortCode}`;
 
   try {
