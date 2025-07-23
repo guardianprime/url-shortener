@@ -20,7 +20,6 @@ shortenRouter.post("/", async (req, res) => {
       userId: req.user._id,
     });
     res.render("index", { shortenedUrl, error: null });
-    
   } catch (err) {
     console.error("Error creating shortened URL:", err);
     return res.render("index", {
@@ -66,6 +65,18 @@ shortenRouter.get("/urls", async (req, res) => {
       urls: [],
       error: "Failed to retrieve URLs.",
     });
+  }
+});
+
+shortenRouter.delete("/urls/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await urlModel.findByIdAndDelete(id);
+    res.redirect("/urls");
+  } catch (err) {
+    console.error("Error deleting URL:", err);
+    res.redirect("/urls");
   }
 });
 
