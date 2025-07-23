@@ -4,6 +4,39 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>list of urls</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f4f4f4;
+      }
+
+      h1 {
+        color: #333;
+        text-align: center;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      li {
+        margin-bottom: 10px;
+      }
+
+      a {
+        color: #007bff;
+        text-decoration: none;
+      }
+    </style>
   </head>
   <body>
     <h1>Your Shortened URLs</h1>
@@ -15,12 +48,21 @@
     <ul>
       <% urls.forEach(url => { %>
       <li>
-        <a href="<%= url.originalUrl %>"><%= url.originalUrl %></a> →
-        <a href="<%= protocol %>://<%= host %>/<%= url.shortCode %>">
-          <%= protocol %>://<%= host %>/<%= url.shortCode %>
-        </a>
-        — <%= url.clicks %> clicks
+        <p>
+          long URL: <a href="<%= url.originalUrl %>"><%= url.originalUrl %></a>
+        </p>
+        <p>
+          short URL:
+          <a href="<%= protocol %>://<%= host %>/<%= url.shortCode %>">
+            <%= protocol %>://<%= host %>/<%= url.shortCode %>
+          </a>
+        </p>
+        <p><%= url.clicks %> clicks</p>
+        <form action="/delete/<%= url.shortCode %>" method="POST">
+          <button type="submit">Delete</button>
+        </form>
       </li>
+
       <% }) %>
     </ul>
 
