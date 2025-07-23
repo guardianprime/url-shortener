@@ -20,11 +20,7 @@ shortenRouter.post("/", async (req, res) => {
       userId: req.user._id,
     });
     res.render("index", { shortenedUrl, error: null });
-    console.log({
-      userId: req.user._id,
-      shortCode,
-      longUrl: url,
-    });
+    
   } catch (err) {
     console.error("Error creating shortened URL:", err);
     return res.render("index", {
