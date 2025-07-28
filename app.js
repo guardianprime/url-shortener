@@ -97,7 +97,6 @@ app.post("/login", (req, res, next) => {
 app.post("/logout", (req, res) => {
   req.logout((err) => {
     if (err) {
-      console.error("Error logging out:", err);
       return res.status(500).send("Error logging out");
     }
     res.redirect("/");
@@ -122,7 +121,6 @@ app.get("/:shortCode", async (req, res) => {
       return res.status(404).send("Short URL not found");
     }
   } catch (err) {
-    console.error("Error during redirect:", err);
     return res.status(500).send("Server error");
   }
 });
