@@ -5,8 +5,11 @@ const passport = require("passport");
 const session = require("express-session");
 const userModel = require("./models/userModel");
 const urlModel = require("./models/urlModel");
+const cors = require("cors");
 require("dotenv").config();
+
 const app = express();
+
 const PORT = process.env.PORT;
 
 connectToMongoDB();
@@ -25,6 +28,7 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(cors());
 
 passport.use(userModel.createStrategy());
 
