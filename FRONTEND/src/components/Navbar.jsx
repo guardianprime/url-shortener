@@ -1,9 +1,9 @@
 const Navbar = () => {
   return (
-    <header>
+    <header className="flex border-amber-600 border-2 justify-between">
       <div>logo image</div>
-      <nav>
-        <ul>
+      <nav className="w-2/3 flex justify-between ">
+        <ul className="flex justify-between w-2/3">
           <li>
             <a href="">about us</a>
           </li>
@@ -13,11 +13,8 @@ const Navbar = () => {
           <li>
             <a href="/shorten/urls">my urls</a>
           </li>
-          <li>
-            <a href="">blog</a>
-          </li>
         </ul>
-        <button>sign in</button>
+        <button className="w-20 border-2 border-pink-800">sign in</button>
       </nav>
     </header>
   );
