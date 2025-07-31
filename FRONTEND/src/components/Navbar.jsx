@@ -11,7 +11,7 @@ const Navbar = () => {
             <a href="">services</a>
           </li>
           <li>
-            <a href="">my urls</a>
+            <a href="/shorten/urls">my urls</a>
           </li>
           <li>
             <a href="">blog</a>
