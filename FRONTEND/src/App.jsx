@@ -1,7 +1,13 @@
+import Navbar from "./components/Navbar";
+import HeroSection from "./components/HeroSection";
+import Footer from "./components/Footer";
+
 const App = () => {
   return (
     <>
-      <h1 className="text-3xl underline">hello there!</h1>
+      <Navbar />
+      <HeroSection />
+      <Footer />
     </>
   );
 };
