@@ -4,7 +4,7 @@ export default function Hamburger() {
   const [isNavOpen, setIsNavOpen] = useState(false);
 
   return (
-    <div className="flex items-center justify-between border-b border-gray-400 py-8">
+    <div className="flex items-center justify-between border-b border-gray-400 py-5 px-2">
       <div className="bg-amber-400 text-white p-1">SMALLURL</div>
       <nav>
         <section className="MOBILE-MENU flex lg:hidden">

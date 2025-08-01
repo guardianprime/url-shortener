@@ -2,7 +2,7 @@ import UrlForm from "./UrlForm";
 
 function Herosection() {
   return (
-    <section className="h-2/5 mt-6">
+    <section className="h-2/5 mt-10">
       <UrlForm />
     </section>
   );
