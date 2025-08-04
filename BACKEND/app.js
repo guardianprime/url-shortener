@@ -17,7 +17,6 @@ const PORT = process.env.PORT;
 connectToMongoDB();
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "FRONTEND/dist")));
 
 app.use(
   session({

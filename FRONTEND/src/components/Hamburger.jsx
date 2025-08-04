@@ -43,7 +43,7 @@ export default function Hamburger() {
                 <a href="http://localhost:8000/shorten/urls">my urls</a>
               </li>
               <li className="border-b border-gray-400 my-8 uppercase">
-                <a href="/contact">Sign in</a>
+                <a href="/signin">Sign in</a>
               </li>
             </ul>
           </div>
@@ -57,7 +57,7 @@ export default function Hamburger() {
             <a href="/shorten/urls">my urls</a>
           </li>
           <li>
-            <a href="/contact">Sign in</a>
+            <a href="/signin">Sign in</a>
           </li>
         </ul>
       </nav>
