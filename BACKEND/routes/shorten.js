@@ -4,10 +4,11 @@ const { nanoid } = require("nanoid");
 
 shortenRouter.post("/", async (req, res) => {
   if (!req.user || !req.user._id) {
-    return res.render("index", {
+    console.log("You must be logged in to shorten URLs.");
+    /* return res.render("index", {
       shortenedUrl: null,
       error: "You must be logged in to shorten URLs.",
-    });
+    }); */
   }
   const { url } = req.body;
   const shortCode = nanoid(7);
@@ -19,13 +20,15 @@ shortenRouter.post("/", async (req, res) => {
       shortCode,
       userId: req.user._id,
     });
-    res.render("index", { shortenedUrl, error: null });
+    console.log(shortenedUrl);
+    // res.render("index", { shortenedUrl, error: null });
   } catch (err) {
     console.error("Error creating shortened URL:", err);
-    return res.render("index", {
+    console.log("Failed to shorten URL.");
+    /* return res.render("index", {
       shortenedUrl: null,
       error: "Failed to shorten URL.",
-    });
+    }); */
   }
 });
 
@@ -41,30 +44,33 @@ shortenRouter.get("/user/:id", async (req, res) => {
   } catch (err) {
     console.error("Error finding URL by ID:", err);
   }
-  res.render("index", { shortenedUrl: null, error: null, originalUrl });
+  console.log(originalUrl);
+  // res.render("index", { shortenedUrl: null, error: null, originalUrl });
 });
 
 shortenRouter.get("/urls", async (req, res) => {
   if (!req.user || !req.user._id) {
-    return res.render("urls", {
+    console.log("You must be logged in to view your URLs.");
+    /*  return res.render("urls", {
       urls: [],
       error: "You must be logged in to view your URLs.",
-    });
+    }); */
   }
   try {
     const userUrls = await urlModel.find({ userId: req.user._id });
-    return res.render("urls", {
+    console.log(userUrls, req.protocol, req.get("host"));
+    /*  return res.render("urls", {
       urls: userUrls,
       protocol: req.protocol,
       host: req.get("host"),
       error: null,
-    });
+    }); */
   } catch (err) {
     console.error("Error fetching user URLs:", err);
-    return res.render("urls", {
+    /*  return res.render("urls", {
       urls: [],
       error: "Failed to retrieve URLs.",
-    });
+    }); */
   }
 });
 

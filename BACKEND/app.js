@@ -5,7 +5,9 @@ const passport = require("passport");
 const session = require("express-session");
 const userModel = require("./models/userModel");
 const urlModel = require("./models/urlModel");
+const path = require("path");
 const cors = require("cors");
+
 require("dotenv").config();
 
 const app = express();
@@ -14,8 +16,8 @@ const PORT = process.env.PORT;
 
 connectToMongoDB();
 
-app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "FRONTEND/dist")));
 
 app.use(
   session({
@@ -35,23 +37,11 @@ passport.use(userModel.createStrategy());
 passport.serializeUser(userModel.serializeUser());
 passport.deserializeUser(userModel.deserializeUser());
 
-app.get("/", EnsureLoggedIn.ensureLoggedIn(), (req, res) => {
-  res.render("index", { shortenedUrl: null, error: null });
-});
-
 app.use(
   "/shorten",
   EnsureLoggedIn.ensureLoggedIn(),
   require("./routes/shorten")
 );
-
-app.get("/login", (req, res) => {
-  res.render("login", { error: null });
-});
-
-app.get("/signup", (req, res) => {
-  res.render("signup", { error: null });
-});
 
 app.post("/signup", (req, res) => {
   userModel.register(
@@ -67,7 +57,7 @@ app.post("/signup", (req, res) => {
         } else if (err.name === "MissingPasswordError") {
           errorMsg = "No password was given.";
         }
-        return res.render("signup", { error: errorMsg });
+        //return res.render("signup", { error: errorMsg });
       } else {
         passport.authenticate("local")(req, res, () => {
           res.redirect("/");
@@ -82,12 +72,13 @@ app.post("/login", (req, res, next) => {
     if (err) {
       return next(err);
     }
+
     if (!user) {
       let errorMsg = "Password or username are incorrect";
       if (info && info.message) {
         errorMsg = info.message;
       }
-      return res.render("login", { error: errorMsg });
+      // return res.render("login", { error: errorMsg });
     }
     req.logIn(user, (err) => {
       if (err) {

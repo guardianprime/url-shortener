@@ -40,7 +40,7 @@ export default function Hamburger() {
                 <a href="/about">About</a>
               </li>
               <li className="border-b border-gray-400 my-8 uppercase">
-                <a href="/shorten/urls">my urls</a>
+                <a href="http://localhost:8000/shorten/urls">my urls</a>
               </li>
               <li className="border-b border-gray-400 my-8 uppercase">
                 <a href="/contact">Sign in</a>
