@@ -1,5 +1,5 @@
-import Footer from "./components/Footer";
-import Hamburger from "./components/Hamburger";
+import Footer from "../components/Footer";
+import Hamburger from "../components/Hamburger";
 
 function Homepage() {
   return (

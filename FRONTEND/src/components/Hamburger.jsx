@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Hamburger() {
   const [isNavOpen, setIsNavOpen] = useState(false);
@@ -37,13 +38,13 @@ export default function Hamburger() {
             </div>
             <ul className="flex flex-col items-center justify-between min-h-[250px]">
               <li className="border-b border-gray-400 my-8 uppercase">
-                <a href="/about">About</a>
+                <Link to="/about">About</Link>
               </li>
               <li className="border-b border-gray-400 my-8 uppercase">
-                <a href="http://localhost:8000/shorten/urls">my urls</a>
+                <Link to="/shorten/urls">my urls</Link>
               </li>
               <li className="border-b border-gray-400 my-8 uppercase">
-                <a href="/signin">Sign in</a>
+                <Link to="/login">Sign in</Link>
               </li>
             </ul>
           </div>
@@ -51,13 +52,13 @@ export default function Hamburger() {
 
         <ul className="DESKTOP-MENU hidden space-x-8 lg:flex">
           <li>
-            <a href="/about">About</a>
+            <Link to="/about">About</Link>
           </li>
           <li>
-            <a href="/shorten/urls">my urls</a>
+            <Link to="/shorten/urls">my urls</Link>
           </li>
           <li>
-            <a href="/signin">Sign in</a>
+            <Link to="/login">Sign in</Link>
           </li>
         </ul>
       </nav>
