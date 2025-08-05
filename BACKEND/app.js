@@ -10,6 +10,9 @@ const cors = require("cors");
 
 require("dotenv").config();
 
+// List of allowed origins
+const allowedOrigins = ["http://localhost:5173"];
+
 const app = express();
 
 const PORT = process.env.PORT;
@@ -29,7 +32,12 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // or use an array for multiple origins
+    credentials: true,
+  })
+);
 
 passport.use(userModel.createStrategy());
 
@@ -77,13 +85,13 @@ app.post("/login", (req, res, next) => {
       if (info && info.message) {
         errorMsg = info.message;
       }
-      // return res.render("login", { error: errorMsg });
+      return res.status(400).json({ error: errorMsg });
     }
     req.logIn(user, (err) => {
       if (err) {
         return next(err);
       }
-      return res.redirect("/");
+      return res.json({ message: success });
     });
   })(req, res, next);
 });
@@ -91,7 +99,7 @@ app.post("/login", (req, res, next) => {
 app.post("/logout", (req, res) => {
   req.logout((err) => {
     if (err) {
-      return res.status(500).send("Error logging out");
+      return res.status(500).json("Error logging out");
     }
     res.redirect("/");
   });
