@@ -5,10 +5,6 @@ const { nanoid } = require("nanoid");
 shortenRouter.post("/", async (req, res) => {
   if (!req.user || !req.user._id) {
     console.log("You must be logged in to shorten URLs.");
-    /* return res.render("index", {
-      shortenedUrl: null,
-      error: "You must be logged in to shorten URLs.",
-    }); */
   }
   const { url } = req.body;
   const shortCode = nanoid(7);
@@ -21,14 +17,13 @@ shortenRouter.post("/", async (req, res) => {
       userId: req.user._id,
     });
     console.log(shortenedUrl);
-    // res.render("index", { shortenedUrl, error: null });
+    res.json({ shortenedUrl });
   } catch (err) {
     console.error("Error creating shortened URL:", err);
     console.log("Failed to shorten URL.");
-    /* return res.render("index", {
-      shortenedUrl: null,
+    return res.json({
       error: "Failed to shorten URL.",
-    }); */
+    });
   }
 });
 
@@ -45,32 +40,32 @@ shortenRouter.get("/user/:id", async (req, res) => {
     console.error("Error finding URL by ID:", err);
   }
   console.log(originalUrl);
-  // res.render("index", { shortenedUrl: null, error: null, originalUrl });
+  // res.json( {  originalUrl });
 });
 
 shortenRouter.get("/urls", async (req, res) => {
   if (!req.user || !req.user._id) {
     console.log("You must be logged in to view your URLs.");
-    /*  return res.render("urls", {
+    return res.json({
       urls: [],
       error: "You must be logged in to view your URLs.",
-    }); */
+    });
   }
   try {
     const userUrls = await urlModel.find({ userId: req.user._id });
     console.log(userUrls, req.protocol, req.get("host"));
-    /*  return res.render("urls", {
+    return res.json({
       urls: userUrls,
       protocol: req.protocol,
       host: req.get("host"),
       error: null,
-    }); */
+    });
   } catch (err) {
     console.error("Error fetching user URLs:", err);
-    /*  return res.render("urls", {
+    return res.json({
       urls: [],
       error: "Failed to retrieve URLs.",
-    }); */
+    });
   }
 });
 
