@@ -14,11 +14,13 @@ const Login = () => {
     try {
       const res = await fetch("http://localhost:8000/login", {
         method: "POST",
-        credentials: "include", // IMPORTANT for sessions (cookies)
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "application/json",
         },
-        body: new URLSearchParams({ username, password }),
+        body: JSON.stringify({
+          username,
+          password,
+        }),
       });
 
       if (res.redirected) {
@@ -69,7 +71,10 @@ const Login = () => {
         {error && <p className="text-red-500">{error}</p>}
       </form>
       <p>
-        don't have an account? <Link to="signup">Signup</Link>
+        Don't have an account?{" "}
+        <Link to="/signup" className="text-blue-500 underline">
+          Signup
+        </Link>
       </p>
     </div>
   );

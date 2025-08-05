@@ -5,13 +5,9 @@ const passport = require("passport");
 const session = require("express-session");
 const userModel = require("./models/userModel");
 const urlModel = require("./models/urlModel");
-const path = require("path");
 const cors = require("cors");
 
 require("dotenv").config();
-
-// List of allowed origins
-const allowedOrigins = ["http://localhost:5173"];
 
 const app = express();
 
@@ -19,6 +15,7 @@ const PORT = process.env.PORT;
 
 connectToMongoDB();
 
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(
@@ -50,48 +47,59 @@ app.use(
   require("./routes/shorten")
 );
 
-app.post("/signup", (req, res) => {
-  userModel.register(
-    new userModel({ username: req.body.username }),
-    req.body.password,
-    (err, user) => {
-      if (err) {
-        let errorMsg = "Error registering user.";
-        if (err.name === "UserExistsError") {
-          errorMsg = "A user with that username already exists.";
-        } else if (err.name === "MissingUsernameError") {
-          errorMsg = "No username was given.";
-        } else if (err.name === "MissingPasswordError") {
-          errorMsg = "No password was given.";
-        }
-        //return res.render("signup", { error: errorMsg });
-      } else {
-        passport.authenticate("local")(req, res, () => {
-          res.redirect("/");
-        });
+app.post("/signup", (req, res, next) => {
+  console.log("Signup attempt:", req.body);
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res
+      .status(400)
+      .json({ error: "Username and password are required." });
+  }
+
+  userModel.register(new userModel({ username }), password, (err, user) => {
+    if (err) {
+      let errorMsg = "Error registering user.";
+
+      if (err.name === "UserExistsError") {
+        errorMsg = "A user with that username already exists.";
+      } else if (err.name === "MissingUsernameError") {
+        errorMsg = "No username was given.";
+      } else if (err.name === "MissingPasswordError") {
+        errorMsg = "No password was given.";
       }
+
+      return res.status(400).json({ error: errorMsg });
     }
-  );
+
+    // Authenticate the new user immediately after registration
+    passport.authenticate("local")(req, res, () => {
+      return res.status(200).json({ message: "Signup successful" });
+    });
+  });
 });
 
 app.post("/login", (req, res, next) => {
+  console.log("Login attempt:", req.body);
+
   passport.authenticate("local", (err, user, info) => {
     if (err) {
-      return next(err);
+      console.error("Passport error:", err);
+      return res.status(500).json({ error: "Internal server error." });
     }
 
     if (!user) {
-      let errorMsg = "Password or username are incorrect";
-      if (info && info.message) {
-        errorMsg = info.message;
-      }
+      const errorMsg = info?.message || "Username or password is incorrect.";
       return res.status(400).json({ error: errorMsg });
     }
+
     req.logIn(user, (err) => {
       if (err) {
-        return next(err);
+        console.error("Login session error:", err);
+        return res.status(500).json({ error: "Failed to log in user." });
       }
-      return res.json({ message: success });
+
+      return res.status(200).json({ message: "Login successful" });
     });
   })(req, res, next);
 });
