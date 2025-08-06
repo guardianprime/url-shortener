@@ -43,7 +43,7 @@ passport.deserializeUser(userModel.deserializeUser());
 
 app.use(
   "/shorten",
-  EnsureLoggedIn.ensureLoggedIn(),
+  // EnsureLoggedIn.ensureLoggedIn(),
   require("./routes/shorten")
 );
 

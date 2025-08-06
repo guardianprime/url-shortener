@@ -3,27 +3,36 @@ const urlModel = require("../models/urlModel");
 const { nanoid } = require("nanoid");
 
 shortenRouter.post("/", async (req, res) => {
-  if (!req.user || !req.user._id) {
-    console.log("You must be logged in to shorten URLs.");
-  }
-  const { url } = req.body;
-  const shortCode = nanoid(7);
+  /*  if (!req.user || !req.user._id) {
+    return res
+      .status(401)
+      .json({ error: "You must be logged in to shorten URLs." });
+  } */
+
+  const { url, alias } = req.body;
+
+  // Use alias if provided, else generate with nanoid
+  const shortCode = alias?.trim() !== "" ? alias.trim() : nanoid(7);
   const shortenedUrl = `${req.protocol}://${req.get("host")}/${shortCode}`;
 
   try {
+    // Check for duplicate alias
+    const existing = await urlModel.findOne({ shortCode });
+    if (existing) {
+      return res.status(400).json({ error: "Alias is already taken." });
+    }
+
     await urlModel.create({
       originalUrl: url,
       shortCode,
-      userId: req.user._id,
+      userId: req.user ? req.user._id : null,
     });
-    console.log(shortenedUrl);
-    res.json({ shortenedUrl });
+
+    console.log("Shortened URL:", shortenedUrl);
+    return res.status(201).json({ shortenedUrl });
   } catch (err) {
     console.error("Error creating shortened URL:", err);
-    console.log("Failed to shorten URL.");
-    return res.json({
-      error: "Failed to shorten URL.",
-    });
+    return res.status(500).json({ error: "Failed to shorten URL." });
   }
 });
 
