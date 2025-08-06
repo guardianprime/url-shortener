@@ -1,6 +1,5 @@
 const express = require("express");
 const { connectToMongoDB } = require("./db");
-const EnsureLoggedIn = require("connect-ensure-login");
 const passport = require("passport");
 const session = require("express-session");
 const userModel = require("./models/userModel");
@@ -48,7 +47,6 @@ app.use(
 );
 
 app.post("/signup", (req, res, next) => {
-  console.log("Signup attempt:", req.body);
   const { username, password } = req.body;
 
   if (!username || !password) {
@@ -80,11 +78,8 @@ app.post("/signup", (req, res, next) => {
 });
 
 app.post("/login", (req, res, next) => {
-  console.log("Login attempt:", req.body);
-
   passport.authenticate("local", (err, user, info) => {
     if (err) {
-      console.error("Passport error:", err);
       return res.status(500).json({ error: "Internal server error." });
     }
 
@@ -95,7 +90,6 @@ app.post("/login", (req, res, next) => {
 
     req.logIn(user, (err) => {
       if (err) {
-        console.error("Login session error:", err);
         return res.status(500).json({ error: "Failed to log in user." });
       }
 
