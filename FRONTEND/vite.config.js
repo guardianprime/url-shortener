@@ -8,6 +8,11 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": "http://localhost:8000",
+      "/login": "http://localhost:8000",
+      "/signup": "http://localhost:8000",
+      "/logout": "http://localhost:8000",
+      "/me": "http://localhost:8000",
+      "/shorten": "http://localhost:8000",
     },
   },
 });

@@ -14,7 +14,7 @@ function Signup() {
     setError("");
 
     try {
-      const res = await fetch("http://localhost:8000/signup", {
+      const res = await fetch("?signup", {
         method: "POST",
         credentials: "include", // keep for cookie-based auth
         headers: {

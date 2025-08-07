@@ -12,7 +12,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:8000/login", {
+      const res = await fetch("/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -23,12 +23,13 @@ const Login = () => {
         }),
       });
 
-      if (res.redirected) {
-        navigate("/"); // Redirected successfully (optional)
-      } else if (res.ok) {
+      const backendReply = await res.json();
+      console.log(backendReply);
+
+      if (res.ok) {
         navigate("/"); // Also works if status 200
       } else {
-        setError("Login failed. Check your credentials.");
+        setError(backendReply.error);
       }
     } catch (err) {
       console.error(err);

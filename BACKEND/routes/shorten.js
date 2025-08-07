@@ -9,7 +9,7 @@ shortenRouter.post("/", async (req, res) => {
       .status(401)
       .json({ error: "You must be logged in to shorten URLs." });
   } */
-
+  console.log(req.user);
   const { url, alias } = req.body;
 
   // Use alias if provided, else generate with nanoid
@@ -37,7 +37,7 @@ shortenRouter.post("/", async (req, res) => {
 
 shortenRouter.get(
   "/user/:id",
-  EnsureLoggedIn.ensureLoggedIn(),
+  // EnsureLoggedIn.ensureLoggedIn(),
   async (req, res) => {
     const { id } = req.params;
     // Here you would typically retrieve the original URL using the ID

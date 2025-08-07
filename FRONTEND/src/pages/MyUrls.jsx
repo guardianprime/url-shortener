@@ -1,21 +1,25 @@
 import { useState, useEffect } from "react";
 
 function MyUrls() {
-  const [data, setData] = useState(null); // For the API response
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error handling
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("http://localhost:8000/shorten/urls");
+        const res = await fetch("/shorten/urls", {
+          credentials: "include",
+        });
+
+        const backendReply = await res.json();
 
         if (!res.ok) {
-          throw new Error(`HTTP error! Status: ${res.status}`);
+          setError(backendReply?.error || "Unknown error from server");
+          return; // ⛔ Don't continue to set data
         }
 
-        const json = await res.json();
-        setData(json);
+        setData(backendReply);
       } catch (err) {
         setError(err.message || "Something went wrong.");
       } finally {
@@ -24,17 +28,31 @@ function MyUrls() {
     };
 
     fetchData();
-  }, []);
+  }, []); // ✅ Run only on mount
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p className="text-red-500">Error: {error}</p>;
+  if (!data || !data.urls) return <p>No URLs found.</p>;
 
   return (
     <div>
       <ul>
-        {data.map((url) => {
-          <li>{url}</li>;
-        })}
+        {data.urls.map((url) => (
+          <li key={url._id}>
+            <a href={url.originalUrl} target="_blank" rel="noopener noreferrer">
+              {url.originalUrl}
+            </a>{" "}
+            →{" "}
+            <a
+              href={`${data.protocol}://${data.host}/${url.shortCode}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {data.protocol}://{data.host}/{url.shortCode}
+            </a>{" "}
+            — {url.clicks} clicks
+          </li>
+        ))}
       </ul>
     </div>
   );
