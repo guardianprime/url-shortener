@@ -11,7 +11,7 @@ export default defineConfig({
       "/login": "http://localhost:8000",
       "/signup": "http://localhost:8000",
       "/logout": "http://localhost:8000",
-      "/me": "http://localhost:8000",
+      "/auth": "http://localhost:8000",
       "/shorten": "http://localhost:8000",
     },
   },

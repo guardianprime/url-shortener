@@ -113,6 +113,25 @@ app.post("/logout", (req, res) => {
   });
 });
 
+app.get("/auth/check", (req, res) => {
+  if (req.user) {
+    // User is authenticated
+    res.json({
+      isAuthenticated: true,
+      user: {
+        id: req.user._id,
+        email: req.user.email,
+      },
+    });
+  } else {
+    // User is not authenticated
+    res.json({
+      isAuthenticated: false,
+      user: null,
+    });
+  }
+});
+
 app.get("/:shortCode", async (req, res) => {
   const { shortCode } = req.params;
 

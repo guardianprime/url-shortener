@@ -1,8 +1,58 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 export default function Hamburger() {
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchUserStatus = async () => {
+      try {
+        const res = await fetch("/auth/check", {
+          credentials: "include", // Important for cookies/sessions
+        });
+
+        const data = await res.json();
+
+        if (data.isAuthenticated) {
+          setIsAuthenticated(true);
+          setUser(data.user);
+        } else {
+          setIsAuthenticated(false);
+          setUser(null);
+        }
+      } catch (error) {
+        console.error("Auth check failed:", error);
+        setError("Failed to check authentication");
+        setIsAuthenticated(false);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserStatus();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      const res = await fetch("/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (res.ok) {
+        setIsAuthenticated(false);
+        setUser(null);
+        // Optionally redirect or show success message
+      }
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
 
   return (
     <div className="flex items-center justify-between border-b border-gray-400 py-5 px-2">
@@ -40,11 +90,34 @@ export default function Hamburger() {
               <li className="border-b border-gray-400 my-8 uppercase">
                 <Link to="/about">About</Link>
               </li>
+
+              {/* Show "My URLs" only if authenticated */}
+              {isAuthenticated && (
+                <li className="border-b border-gray-400 my-8 uppercase">
+                  <Link to="/shorten/urls">My URLs</Link>
+                </li>
+              )}
+
               <li className="border-b border-gray-400 my-8 uppercase">
-                <Link to="/shorten/urls">my urls</Link>
-              </li>
-              <li className="border-b border-gray-400 my-8 uppercase">
-                <Link to="/login">Sign in</Link>
+                {loading ? (
+                  <span>Loading...</span>
+                ) : error ? (
+                  <span className="text-red-500">Error</span>
+                ) : isAuthenticated ? (
+                  <div className="flex flex-col items-center space-y-2">
+                    <span className="text-sm text-gray-600">
+                      Welcome, {user?.email || user?.username || "User"}
+                    </span>
+                    <button
+                      onClick={handleLogout}
+                      className="hover:text-amber-600"
+                    >
+                      Log Out
+                    </button>
+                  </div>
+                ) : (
+                  <Link to="/login">Sign In</Link>
+                )}
               </li>
             </ul>
           </div>
@@ -54,11 +127,31 @@ export default function Hamburger() {
           <li>
             <Link to="/about">About</Link>
           </li>
+
+          {/* Show "My URLs" only if authenticated */}
+          {isAuthenticated && (
+            <li>
+              <Link to="/shorten/urls">My URLs</Link>
+            </li>
+          )}
+
           <li>
-            <Link to="/shorten/urls">my urls</Link>
-          </li>
-          <li>
-            <Link to="/login">Sign in</Link>
+            {loading ? (
+              <span>Loading...</span>
+            ) : error ? (
+              <span className="text-red-500">Error</span>
+            ) : isAuthenticated ? (
+              <div className="flex items-center space-x-4">
+                <span className="text-sm text-gray-600">
+                  {user?.email || user?.username || "User"}
+                </span>
+                <button onClick={handleLogout} className="hover:text-amber-600">
+                  Log Out
+                </button>
+              </div>
+            ) : (
+              <Link to="/login">Sign In</Link>
+            )}
           </li>
         </ul>
       </nav>

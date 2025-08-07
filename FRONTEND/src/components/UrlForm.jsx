@@ -17,7 +17,7 @@ function UrlForm() {
       setError("");
       setShortenedUrl("");
 
-      const res = await fetch("http://localhost:8000/shorten", {
+      const res = await fetch("/shorten", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
