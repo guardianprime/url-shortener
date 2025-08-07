@@ -13,7 +13,7 @@ function MyUrls() {
         });
 
         const backendReply = await res.json();
-
+        console.log(backendReply);
         if (!res.ok) {
           setError(backendReply?.error || "Unknown error from server");
           return; // ⛔ Don't continue to set data
@@ -32,10 +32,11 @@ function MyUrls() {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p className="text-red-500">Error: {error}</p>;
-  if (!data || !data.urls) return <p>No URLs found.</p>;
+  if (!data || !data.urls || data === null) return <p>No URLs found.</p>;
 
   return (
     <div>
+      <h1>These are your saved urls</h1>
       <ul>
         {data.urls.map((url) => (
           <li key={url._id}>

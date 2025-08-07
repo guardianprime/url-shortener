@@ -22,6 +22,7 @@ function UrlForm() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({ url, alias }),
       });
 
