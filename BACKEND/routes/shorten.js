@@ -4,12 +4,6 @@ const EnsureLoggedIn = require("connect-ensure-login");
 const { nanoid } = require("nanoid");
 
 shortenRouter.post("/", async (req, res) => {
-  /*  if (!req.user || !req.user._id) {
-    return res
-      .status(401)
-      .json({ error: "You must be logged in to shorten URLs." });
-  } */
-  console.log(req.user);
   const { url, alias } = req.body;
 
   // Use alias if provided, else generate with nanoid

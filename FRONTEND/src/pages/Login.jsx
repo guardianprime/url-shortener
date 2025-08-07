@@ -24,7 +24,6 @@ const Login = () => {
       });
 
       const backendReply = await res.json();
-      console.log(backendReply);
 
       if (res.ok) {
         navigate("/"); // Also works if status 200

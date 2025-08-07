@@ -76,7 +76,6 @@ app.post("/signup", (req, res, next) => {
 
     // Authenticate the new user immediately after registration
     passport.authenticate("local")(req, res, () => {
-      console.log(req.user);
       return res.status(200).json({ message: "Signup successful" });
     });
   });
@@ -99,7 +98,6 @@ app.post("/login", (req, res, next) => {
       }
 
       req.session.save(() => {
-        console.log(req.user);
         return res.status(200).json({ message: "Login successful" });
       });
     });
@@ -113,20 +111,6 @@ app.post("/logout", (req, res) => {
     }
     res.redirect("/");
   });
-});
-
-app.get("/me", (req, res) => {
-  console.log("COOKIES RECEIVED:", req.headers.cookie);
-  console.log("SESSION ID:", req.sessionID);
-  console.log("SESSION:", req.session);
-  console.log("USER:", req.user);
-  console.log("IS AUTHENTICATED:", req.isAuthenticated());
-  console.log("HEADERS:", req.headers);
-
-  if (req.isAuthenticated()) {
-    return res.json({ user: req.user });
-  }
-  return res.status(401).json({ error: "Not logged in" });
 });
 
 app.get("/:shortCode", async (req, res) => {
