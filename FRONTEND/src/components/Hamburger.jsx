@@ -16,6 +16,7 @@ export default function Hamburger() {
         });
 
         const data = await res.json();
+        console.log(data)
 
         if (data.isAuthenticated) {
           setIsAuthenticated(true);

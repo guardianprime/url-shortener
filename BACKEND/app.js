@@ -120,6 +120,7 @@ app.get("/auth/check", (req, res) => {
       isAuthenticated: true,
       user: {
         id: req.user._id,
+        username: req.user.username,
         email: req.user.email,
       },
     });
