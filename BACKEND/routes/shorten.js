@@ -94,11 +94,14 @@ shortenRouter.delete(
     const { id } = req.params;
 
     try {
-      await urlModel.findByIdAndDelete(id);
-      res.redirect("/urls");
+      const deleted = await urlModel.findByIdAndDelete(id);
+      if (!deleted) {
+        return res.status(404).json({ error: "URL not found." });
+      }
+
+      return res.status(200).json({ message: "URL deleted successfully." });
     } catch (err) {
-      res.json({ error: "Error deleting URL:" });
-      res.redirect("/urls");
+      return res.status(500).json({ error: "Error deleting URL." });
     }
   }
 );
