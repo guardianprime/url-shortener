@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-export default function Hamburger() {
+export default function Hamburger({ home }) {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
@@ -16,7 +16,7 @@ export default function Hamburger() {
         });
 
         const data = await res.json();
-        console.log(data)
+        console.log(data);
 
         if (data.isAuthenticated) {
           setIsAuthenticated(true);
@@ -91,6 +91,11 @@ export default function Hamburger() {
               <li className="border-b border-gray-400 my-8 uppercase">
                 <Link to="/about">About</Link>
               </li>
+              {home && (
+                <li className="border-b border-gray-400 my-8 uppercase">
+                  <Link to="/">Home</Link>
+                </li>
+              )}
 
               {/* Show "My URLs" only if authenticated */}
               {isAuthenticated && (
