@@ -20,5 +20,8 @@
   "description": "",
   "devDependencies": {
     "concurrently": "^9.2.0"
+  },
+  "dependencies": {
+    "express-rate-limit": "^8.0.1"
   }
 }

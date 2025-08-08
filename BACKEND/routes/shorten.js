@@ -2,8 +2,15 @@ const shortenRouter = require("express").Router();
 const urlModel = require("../models/urlModel");
 const EnsureLoggedIn = require("connect-ensure-login");
 const { nanoid } = require("nanoid");
+const rateLimit = require("express-rate-limit");
 
-shortenRouter.post("/", async (req, res) => {
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: (req, res) => (req.user ? 20 : 10),
+  message: "Too many URLs created from this IP, please try again later.",
+});
+
+shortenRouter.post("/", limiter, async (req, res) => {
   const { url, alias } = req.body;
 
   // Use alias if provided, else generate with nanoid
@@ -31,10 +38,10 @@ shortenRouter.post("/", async (req, res) => {
 
 shortenRouter.get(
   "/user/:id",
-  // EnsureLoggedIn.ensureLoggedIn(),
+  EnsureLoggedIn.ensureLoggedIn(),
+  limiter,
   async (req, res) => {
     const { id } = req.params;
-    // Here you would typically retrieve the original URL using the ID
     let originalUrl = null;
     try {
       const urlDoc = await urlModel.findById(id);
@@ -51,6 +58,7 @@ shortenRouter.get(
 shortenRouter.get(
   "/urls",
   EnsureLoggedIn.ensureLoggedIn(),
+  limiter,
   async (req, res) => {
     console.log(req.user);
 
@@ -81,6 +89,7 @@ shortenRouter.get(
 shortenRouter.delete(
   "/urls/:id",
   EnsureLoggedIn.ensureLoggedIn(),
+  limiter,
   async (req, res) => {
     const { id } = req.params;
 
