@@ -60,8 +60,6 @@ shortenRouter.get(
   EnsureLoggedIn.ensureLoggedIn(),
   limiter,
   async (req, res) => {
-    console.log(req.user);
-
     if (!req.user || !req.user._id) {
       return res.json({
         urls: [],

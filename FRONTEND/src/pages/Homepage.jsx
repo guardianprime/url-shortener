@@ -5,7 +5,7 @@ import HeroSection from "../components/HeroSection";
 function Homepage() {
   return (
     <>
-      <Hamburger />
+      <Hamburger urlpage={true} />
       <HeroSection />
       <Footer />
     </>

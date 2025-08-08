@@ -16,7 +16,6 @@ export default function Hamburger({ home, urlpage }) {
         });
 
         const data = await res.json();
-        console.log(data);
 
         if (data.isAuthenticated) {
           setIsAuthenticated(true);
@@ -98,10 +97,12 @@ export default function Hamburger({ home, urlpage }) {
               )}
 
               {/* Show "My URLs" only if authenticated */}
-              {isAuthenticated && (
+              {isAuthenticated && urlpage ? (
                 <li className="border-b border-gray-400 my-8 uppercase">
                   <Link to="/shorten/urls">My URLs</Link>
                 </li>
+              ) : (
+                ""
               )}
 
               <li className="border-b border-gray-400 my-8 uppercase">
