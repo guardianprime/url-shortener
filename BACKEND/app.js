@@ -5,7 +5,6 @@ const session = require("express-session");
 const userModel = require("./models/userModel");
 const urlModel = require("./models/urlModel");
 const cors = require("cors");
-const MongoStore = require("connect-mongo");
 
 require("dotenv").config();
 
@@ -19,7 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: "http://localhost:5173", // or use an array for multiple origins
+    origin: ["http://localhost:5173", "https://smallurl-wisf.onrender.com"], // or use an array for multiple origins
     credentials: true,
   })
 );

@@ -51,6 +51,7 @@ function MyUrls() {
       textArea.select();
       document.execCommand("copy");
       document.body.removeChild(textArea);
+      console.log(err)
 
       setCopied((prev) => ({ ...prev, [urlId]: true }));
       setTimeout(() => {
