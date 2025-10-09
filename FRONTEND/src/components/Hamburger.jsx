@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import API_BASE_URL from "../config/api.js";
 
 export default function Hamburger({ home, urlpage }) {
   const [isNavOpen, setIsNavOpen] = useState(false);
@@ -11,7 +12,7 @@ export default function Hamburger({ home, urlpage }) {
   useEffect(() => {
     const fetchUserStatus = async () => {
       try {
-        const res = await fetch("/auth/check", {
+        const res = await fetch(`${API_BASE_URL}/auth/check`, {
           credentials: "include", // Important for cookies/sessions
         });
 
@@ -39,7 +40,7 @@ export default function Hamburger({ home, urlpage }) {
 
   const handleLogout = async () => {
     try {
-      const res = await fetch("/logout", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/logout`, {
         method: "POST",
         credentials: "include",
       });
@@ -55,17 +56,17 @@ export default function Hamburger({ home, urlpage }) {
   };
 
   return (
-    <div className="flex items-center justify-between border-b border-gray-400 py-5 px-2">
-      <div className="bg-amber-400 text-white p-1">SMALLURL</div>
+    <div className="flex items-center justify-between border-b border-gray-400 py-5 px-2 bg-[#031f39]">
+      <div className="bg-[#FF5F1F] text-white p-1">SMALLURL</div>
       <nav>
         <section className="MOBILE-MENU flex lg:hidden">
           <div
             className="HAMBURGER-ICON space-y-2"
             onClick={() => setIsNavOpen((prev) => !prev)}
           >
-            <span className="block h-0.5 w-8 animate-pulse bg-gray-600"></span>
-            <span className="block h-0.5 w-8 animate-pulse bg-gray-600"></span>
-            <span className="block h-0.5 w-8 animate-pulse bg-gray-600"></span>
+            <span className="block h-0.5 w-8 animate-pulse bg-white"></span>
+            <span className="block h-0.5 w-8 animate-pulse bg-white"></span>
+            <span className="block h-0.5 w-8 animate-pulse bg-white"></span>
           </div>
 
           <div className={isNavOpen ? "showMenuNav" : "hideMenuNav"}>
@@ -74,7 +75,7 @@ export default function Hamburger({ home, urlpage }) {
               onClick={() => setIsNavOpen(false)}
             >
               <svg
-                className="h-8 w-8 text-gray-600"
+                className="h-8 w-8 text-white"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -88,18 +89,24 @@ export default function Hamburger({ home, urlpage }) {
             </div>
             <ul className="flex flex-col items-center justify-between min-h-[250px]">
               <li className="border-b border-gray-400 my-8 uppercase">
-                <Link to="/about">About</Link>
+                <Link to="/about" className="text-white">
+                  About
+                </Link>
               </li>
               {home && (
                 <li className="border-b border-gray-400 my-8 uppercase">
-                  <Link to="/">Home</Link>
+                  <Link to="/" className="text-white">
+                    Home
+                  </Link>
                 </li>
               )}
 
               {/* Show "My URLs" only if authenticated */}
               {isAuthenticated && urlpage ? (
                 <li className="border-b border-gray-400 my-8 uppercase">
-                  <Link to="/shorten/urls">My URLs</Link>
+                  <Link to="/shorten/urls" className="text-white">
+                    My URLs
+                  </Link>
                 </li>
               ) : (
                 ""
@@ -112,7 +119,7 @@ export default function Hamburger({ home, urlpage }) {
                   <span className="text-red-500">Error</span>
                 ) : isAuthenticated ? (
                   <div className="flex flex-col items-center space-y-2">
-                    <span className="text-sm text-gray-600">
+                    <span className="text-sm text-white">
                       Welcome, {user?.email || user?.username || "User"}
                     </span>
                     <button
@@ -123,7 +130,9 @@ export default function Hamburger({ home, urlpage }) {
                     </button>
                   </div>
                 ) : (
-                  <Link to="/login">Sign In</Link>
+                  <Link to="/login" className="text-white">
+                    Sign In
+                  </Link>
                 )}
               </li>
             </ul>
@@ -149,7 +158,7 @@ export default function Hamburger({ home, urlpage }) {
               <span className="text-red-500">Error</span>
             ) : isAuthenticated ? (
               <div className="flex items-center space-x-4">
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-white">
                   {user?.email || user?.username || "User"}
                 </span>
                 <button onClick={handleLogout} className="hover:text-amber-600">
@@ -173,7 +182,7 @@ export default function Hamburger({ home, urlpage }) {
         height: 100vh;
         top: 0;
         left: 0;
-        background: white;
+        background:  #031f39;
         z-index: 10;
         display: flex;
         flex-direction: column;

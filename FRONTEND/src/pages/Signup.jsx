@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import API_BASE_URL from "../config/api.js";
 
 function Signup() {
   const [username, setUsername] = useState("");
@@ -14,7 +15,7 @@ function Signup() {
     setError("");
 
     try {
-      const res = await fetch("?signup", {
+      const res = await fetch(`${API_BASE_URL}/signup`, {
         method: "POST",
         credentials: "include", // keep for cookie-based auth
         headers: {

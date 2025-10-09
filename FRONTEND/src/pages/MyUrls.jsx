@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Hamburger from "../components/Hamburger";
+import API_BASE_URL from "../config/api.js";
 
 function MyUrls() {
   const [data, setData] = useState(null);
@@ -14,7 +15,7 @@ function MyUrls() {
 
   const fetchUrls = async () => {
     try {
-      const res = await fetch("/shorten/urls", {
+      const res = await fetch(`${API_BASE_URL}/shorten/urls`, {
         credentials: "include",
       });
 
@@ -49,9 +50,8 @@ function MyUrls() {
       textArea.value = shortUrl;
       document.body.appendChild(textArea);
       textArea.select();
-      document.execCommand("copy");
       document.body.removeChild(textArea);
-      console.log(err)
+      setError(err);
 
       setCopied((prev) => ({ ...prev, [urlId]: true }));
       setTimeout(() => {
@@ -66,7 +66,7 @@ function MyUrls() {
     setDeleting((prev) => ({ ...prev, [id]: true }));
 
     try {
-      const res = await fetch(`/shorten/urls/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/shorten/urls/${id}`, {
         method: "DELETE",
         credentials: "include",
       });
@@ -76,7 +76,6 @@ function MyUrls() {
         alert(reply?.error || "Failed to delete.");
         return;
       }
-
       // Remove the deleted URL from state
       setData((prev) => ({
         ...prev,

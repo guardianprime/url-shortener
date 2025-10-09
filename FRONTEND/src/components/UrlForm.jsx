@@ -1,4 +1,5 @@
 import { useState } from "react";
+import API_BASE_URL from "../config/api.js";
 
 function UrlForm() {
   const [error, setError] = useState("");
@@ -17,7 +18,7 @@ function UrlForm() {
       setError("");
       setShortenedUrl("");
 
-      const res = await fetch("/shorten", {
+      const res = await fetch(`${API_BASE_URL}/shorten`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -41,7 +42,7 @@ function UrlForm() {
   }
 
   return (
-    <div className="border-2 border-violet-900 h-full p-2.5">
+    <div className="h-full p-2.5 bg-white rounded-xs">
       <form onSubmit={handleSubmit} id="shortenForm">
         <label htmlFor="url" className="text-lg">
           Shorten your link
@@ -51,7 +52,7 @@ function UrlForm() {
           id="url"
           name="url"
           required
-          className="block border-2 border-amber-500 rounded-sm w-full h-10 p-2 mt-2"
+          className="block border-2 rounded-sm w-full h-10 p-2 mt-2"
           placeholder="Enter a long link here"
         />
         <label htmlFor="alias" className="mt-4 text-lg">
@@ -62,12 +63,12 @@ function UrlForm() {
           type="text"
           id="alias"
           name="alias"
-          className="block border-2 border-amber-500 rounded-sm w-full h-10 p-2 mt-2"
+          className="block border-2  rounded-sm w-full h-10 p-2 mt-2"
           placeholder="Enter alias (optional)"
         />
         <button
           type="submit"
-          className="border-2 border-amber-600 mt-7 p-2 rounded-sm block mx-auto"
+          className="border-2 mt-7 p-2 rounded-sm block mx-auto"
         >
           Shorten URL
         </button>
