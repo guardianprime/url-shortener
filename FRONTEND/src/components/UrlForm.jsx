@@ -1,7 +1,7 @@
 import { useState } from "react";
 import API_BASE_URL from "../config/api.js";
 
-function UrlForm() {
+function UrlForm({ setHiddenToggle, hiddenToggle }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [shortenedUrl, setShortenedUrl] = useState("");
@@ -56,17 +56,24 @@ function UrlForm() {
       {loading && <p>⏳ URL is being shortened...</p>}
       {error && <p className="text-red-500">❌ {error}</p>}
       {shortenedUrl ? (
-        <form>
-          <input className="" readOnly value={``} />
+        <form onSubmit={(e) => e.preventDefault()} id="shortenForm">
+          <input className="" name="longUrl " readOnly value={``} />
           <input
-            className="text-green-600"
+            className="text-green-600 block border-2 rounded-sm w-full h-10 p-2 mt-2"
             readOnly
-            value={`✅ Shortened URL: ${shortenedUrl}`}
+            value={shortenedUrl}
+            name="shortenedUrl"
           />
-          <div className="flex">
+          <div className="flex justify-between w-2/3 mx-auto">
             <button
               className="border-2 mt-7 p-2 rounded-sm"
-              onClick={() => navigator.clipboard.writeText(shortenedUrl)}
+              onClick={() => {
+                navigator.clipboard.writeText(shortenedUrl);
+                setHiddenToggle(!hiddenToggle);
+                setTimeout(() => {
+                  setHiddenToggle(false);
+                }, 2000);
+              }}
             >
               Copy
             </button>
