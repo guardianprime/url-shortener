@@ -12,6 +12,9 @@ const limiter = rateLimit({
 
 shortenRouter.post("/", limiter, async (req, res) => {
   const { url, alias } = req.body;
+  if (!url || typeof url !== "string" || url.trim() === "") {
+    return res.status(400).json({ error: "Invalid URL provided." });
+  }
 
   // Use alias if provided, else generate with nanoid
   const shortCode = alias?.trim() !== "" ? alias.trim() : nanoid(7);

@@ -11,6 +11,16 @@ function UrlForm() {
 
     const formData = new FormData(e.target);
     const url = formData.get("url");
+    if (!url || url.trim() === "") {
+      setError("Please enter a valid URL.");
+      return;
+    }
+
+    if (!/^https?:\/\//i.test(url)) {
+      setError("URL must start with http:// or https://");
+      return;
+    }
+
     const alias = formData.get("alias");
 
     try {
@@ -43,46 +53,65 @@ function UrlForm() {
 
   return (
     <div className="h-full p-2.5 bg-white rounded-xs">
-      <form onSubmit={handleSubmit} id="shortenForm">
-        <label htmlFor="url" className="text-lg">
-          Shorten your link
-        </label>
-        <input
-          type="text"
-          id="url"
-          name="url"
-          required
-          className="block border-2 rounded-sm w-full h-10 p-2 mt-2"
-          placeholder="Enter a long link here"
-        />
-        <label htmlFor="alias" className="mt-4 text-lg">
-          <i className="fa-solid fa-wand-magic-sparkles"></i>
-          <span> Customize your link</span>
-        </label>
-        <input
-          type="text"
-          id="alias"
-          name="alias"
-          className="block border-2  rounded-sm w-full h-10 p-2 mt-2"
-          placeholder="Enter alias (optional)"
-        />
-        <button
-          type="submit"
-          className="border-2 mt-7 p-2 rounded-sm block mx-auto"
-        >
-          Shorten URL
-        </button>
-      </form>
-
       {loading && <p>⏳ URL is being shortened...</p>}
       {error && <p className="text-red-500">❌ {error}</p>}
-      {shortenedUrl && (
-        <p className="text-green-600">
-          ✅ Shortened URL:{" "}
-          <a href={shortenedUrl} target="_blank" rel="noopener noreferrer">
-            {shortenedUrl}
-          </a>
-        </p>
+      {shortenedUrl ? (
+        <form>
+          <input className="" readOnly value={``} />
+          <input
+            className="text-green-600"
+            readOnly
+            value={`✅ Shortened URL: ${shortenedUrl}`}
+          />
+          <div className="flex">
+            <button
+              className="border-2 mt-7 p-2 rounded-sm"
+              onClick={() => navigator.clipboard.writeText(shortenedUrl)}
+            >
+              Copy
+            </button>
+            <button
+              className="border-2 mt-7 p-2 rounded-sm"
+              onClick={() => {
+                setShortenedUrl("");
+                setError("");
+              }}
+            >
+              Shorten Another
+            </button>
+          </div>
+        </form>
+      ) : (
+        <form onSubmit={handleSubmit} id="shortenForm">
+          <label htmlFor="url" className="text-lg">
+            Shorten your link
+          </label>
+          <input
+            type="text"
+            id="url"
+            name="url"
+            required
+            className="block border-2 rounded-sm w-full h-10 p-2 mt-2"
+            placeholder="Enter a long link here"
+          />
+          <label htmlFor="alias" className="mt-4 text-lg">
+            <i className="fa-solid fa-wand-magic-sparkles"></i>
+            <span> Customize your link</span>
+          </label>
+          <input
+            type="text"
+            id="alias"
+            name="alias"
+            className="block border-2  rounded-sm w-full h-10 p-2 mt-2"
+            placeholder="Enter alias (optional)"
+          />
+          <button
+            type="submit"
+            className="border-2 mt-7 p-2 rounded-sm block mx-auto"
+          >
+            Shorten URL
+          </button>
+        </form>
       )}
     </div>
   );
