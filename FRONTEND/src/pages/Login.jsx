@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import API_BASE_URL from "../config/api.js";
+import Hamburger from "../components/Hamburger.jsx";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -39,6 +40,7 @@ const Login = () => {
 
   return (
     <div className="p-4">
+      <Hamburger home={true} urlpage={false} />
       <h2 className="text-2xl mb-4 text-white">Login</h2>
       <form onSubmit={handleSubmit} className="space-y-4 text-white">
         <label htmlFor="username">Username:</label>
@@ -64,7 +66,7 @@ const Login = () => {
           required
         />
         <button
-          className="bg-blue-600 text-white px-4 py-2 rounded text-white"
+          className="bg-blue-600  px-4 py-2 rounded text-white"
           type="submit"
         >
           Log In

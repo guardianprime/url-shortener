@@ -15,7 +15,6 @@ export default function Hamburger({ home, urlpage }) {
         const res = await fetch(`${API_BASE_URL}/api/v1/auth/check`);
 
         const data = await res.json();
-        console.log(data)
 
         if (data.isAuthenticated) {
           setIsAuthenticated(true);
