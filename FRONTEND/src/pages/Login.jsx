@@ -39,8 +39,8 @@ const Login = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl mb-4">Login</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <h2 className="text-2xl mb-4 text-white">Login</h2>
+      <form onSubmit={handleSubmit} className="space-y-4 text-white">
         <label htmlFor="username">Username:</label>
         <input
           className="border p-2 block w-full"
@@ -64,14 +64,14 @@ const Login = () => {
           required
         />
         <button
-          className="bg-blue-600 text-white px-4 py-2 rounded"
+          className="bg-blue-600 text-white px-4 py-2 rounded text-white"
           type="submit"
         >
           Log In
         </button>
         {error && <p className="text-red-500">{error}</p>}
       </form>
-      <p>
+      <p className="text-white">
         Don't have an account?{" "}
         <Link to="/signup" className="text-blue-500 underline">
           Signup

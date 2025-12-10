@@ -1,7 +1,5 @@
-// models/Url.js
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-// Define the URL schema
 const UrlSchema = new mongoose.Schema({
   originalUrl: {
     type: String,
@@ -10,8 +8,16 @@ const UrlSchema = new mongoose.Schema({
   },
   shortCode: {
     type: String,
+    unique: true,
+  },
+  alias: {
+    type: String,
+    unique: true,
+  },
+  shortUrl: {
+    type: String,
     required: true,
-    unique: true, // ✅ THIS is the unique part
+    unique: true,
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -27,5 +33,6 @@ const UrlSchema = new mongoose.Schema({
   },
 });
 
-// Export the Url model
-module.exports = mongoose.model("Url", UrlSchema);
+const Url = mongoose.model("Url", UrlSchema);
+
+export default Url;

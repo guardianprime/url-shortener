@@ -90,14 +90,23 @@ function MyUrls() {
 
   if (loading) return <p className="text-center text-gray-600">Loading...</p>;
   if (error) return <p className="text-center text-red-500">Error: {error}</p>;
-  if (!data || !data.urls || data.urls.length === 0)
-    return <p className="text-center text-gray-500">No URLs found.</p>;
+  if (!data || !data.urls || data.urls.length === 0) {
+    return (
+      <>
+        <Hamburger home={true} urlpage={false} />
+        <p className="text-center text-white mt-8 text-lg">No URLs found.</p>
+        <p className="text-center text-white mt-8 text-lg">
+          Create or shorten urls to see your saved the urls
+        </p>
+      </>
+    );
+  }
 
   return (
     <>
       <Hamburger home={true} urlpage={false} />
       <div className="max-w-3xl mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold mb-6 text-center">
+        <h1 className="text-2xl font-bold mb-6 text-center text-white">
           Your Shortened URLs
         </h1>
         <ul className="space-y-4">
@@ -109,7 +118,7 @@ function MyUrls() {
                 key={url._id}
                 className="border border-gray-300 rounded-lg p-4 shadow-sm hover:shadow-md transition"
               >
-                <p className="mb-1 text-sm text-gray-500">Original URL:</p>
+                <p className="mb-1 text-sm text-white">Original URL:</p>
                 <a
                   href={url.originalUrl}
                   target="_blank"
@@ -119,9 +128,7 @@ function MyUrls() {
                   {url.originalUrl}
                 </a>
 
-                <p className="mt-2 mb-1 text-sm text-gray-500">
-                  Shortened URL:
-                </p>
+                <p className="mt-2 mb-1 text-sm text-white">Shortened URL:</p>
                 <div className="flex items-center gap-2 mb-2">
                   <a
                     href={shortUrl}
@@ -144,7 +151,7 @@ function MyUrls() {
                 </div>
 
                 <div className="mt-4 flex items-center justify-between">
-                  <p className="text-sm text-gray-700">
+                  <p className="text-sm text-white">
                     📊 Clicks:{" "}
                     <span className="font-semibold">{url.clicks}</span>
                   </p>

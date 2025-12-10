@@ -40,8 +40,8 @@ function Signup() {
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl mb-4">Sign Up</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <h2 className="text-2xl mb-4 text-white">Sign Up</h2>
+      <form onSubmit={handleSubmit} className="space-y-4 text-white">
         <div>
           <label htmlFor="username">Username</label>
           <input
