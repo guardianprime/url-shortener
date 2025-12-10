@@ -28,7 +28,7 @@ function UrlForm({ setHiddenToggle, hiddenToggle }) {
       setError("");
       setShortenedUrl("");
 
-      const res = await fetch(`${API_BASE_URL}/shorten`, {
+      const res = await fetch(`${API_BASE_URL}api/v1/shorten`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

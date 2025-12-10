@@ -15,7 +15,6 @@ export const createUrl = async (req, res) => {
   )}/${shortCode}/${alias}`;
 
   try {
-    // Check for duplicate alias
     const existing = await urlModel.findOne({ shortCode });
     if (existing) {
       return res

@@ -9,3 +9,11 @@ export const loginController = (req, res) => {
 export const logoutController = (req, res) => {
   res.send("this is the auth logout controller");
 };
+
+export const checkUserStatusController = (req, res) => {
+  const isAuthenticated = false;
+  res.status(200).json({
+    success: true,
+    data: isAuthenticated,
+  });
+};
