@@ -12,9 +12,9 @@ const shortenRouter = Router();
 
 shortenRouter.post("/", limiter, createUrl);
 
-shortenRouter.get("/user/:id", limiter, getUser);
-
 shortenRouter.get("/urls", limiter, getUrls);
+
+shortenRouter.get("/user/:id", limiter, getUser);
 
 shortenRouter.delete("/url/:id", limiter, deleteUrl);
 
