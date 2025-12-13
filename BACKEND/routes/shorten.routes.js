@@ -1,5 +1,4 @@
 import { Router } from "express";
-import limiter from "../middlewares/limiter.middlewares.js";
 
 import {
   createUrl,
@@ -11,14 +10,14 @@ import {
 
 const shortenRouter = Router();
 
-shortenRouter.post("/", limiter, createUrl);
+shortenRouter.post("/", createUrl);
 
-shortenRouter.get("/urls", limiter, getUrls);
+shortenRouter.get("/urls", getUrls);
 
-shortenRouter.get("/user/:id", limiter, getUser);
+shortenRouter.get("/user/:id", getUser);
 
-shortenRouter.put("/:id", limiter, updateUrl);
+shortenRouter.put("/:id", updateUrl);
 
-shortenRouter.delete("/url/:id", limiter, deleteUrl);
+shortenRouter.delete("/url/:id", deleteUrl);
 
 export default shortenRouter;
