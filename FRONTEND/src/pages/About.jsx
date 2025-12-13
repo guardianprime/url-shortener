@@ -1,9 +1,17 @@
 import Hamburger from "../components/Hamburger";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faGear,
+  faRocket,
+  faLink,
+  faRepeat,
+} from "@fortawesome/free-solid-svg-icons";
+
 function Details() {
   return (
     <>
       <Hamburger home={true} />
-      <div className="p-6 max-w-3xl mx-auto">
+      <div className="p-6 max-w-3xl mx-auto text-white">
         <h1 className="text-2xl font-bold mb-4">How It Works</h1>
         <p className="mb-4">
           Our URL shortener takes long, unwieldy web addresses and converts them
@@ -11,7 +19,7 @@ function Details() {
         </p>
 
         <h2 className="text-xl font-semibold mt-4 mb-2">
-          🔗 Step 1: Enter Your URL
+          <FontAwesomeIcon icon={faLink} /> Step 1: Enter Your URL
         </h2>
         <p className="mb-4">
           You start by entering the long URL you want to shorten into the form
@@ -19,7 +27,7 @@ function Details() {
         </p>
 
         <h2 className="text-xl font-semibold mt-4 mb-2">
-          ⚙️ Step 2: We Generate a Short Link
+          <FontAwesomeIcon icon={faGear} /> Step 2: We Generate a Short Link
         </h2>
         <p className="mb-4">
           Our backend generates a unique identifier (or uses your alias) and
@@ -28,7 +36,7 @@ function Details() {
         </p>
 
         <h2 className="text-xl font-semibold mt-4 mb-2">
-          🚀 Step 3: Share Your Link
+          <FontAwesomeIcon icon={faRocket} /> Step 3: Share Your Link
         </h2>
         <p className="mb-4">
           Once your short link is generated, you can copy it and share it
@@ -36,7 +44,7 @@ function Details() {
         </p>
 
         <h2 className="text-xl font-semibold mt-4 mb-2">
-          🔁 Step 4: Redirection
+          <FontAwesomeIcon icon={faRepeat} /> Step 4: Redirection
         </h2>
         <p className="mb-4">
           When someone clicks the short link, our server instantly looks up the

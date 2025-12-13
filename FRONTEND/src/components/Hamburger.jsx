@@ -12,9 +12,7 @@ export default function Hamburger({ home, urlpage }) {
   useEffect(() => {
     const fetchUserStatus = async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/auth/check`, {
-          credentials: "include", // Important for cookies/sessions
-        });
+        const res = await fetch(`${API_BASE_URL}/api/v1/auth/check`);
 
         const data = await res.json();
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import API_BASE_URL from "../config/api.js";
+import Hamburger from "../components/Hamburger.jsx";
 
 function Signup() {
   const [username, setUsername] = useState("");
@@ -40,8 +41,9 @@ function Signup() {
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl mb-4">Sign Up</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <Hamburger home={true} urlpage={false} />
+      <h2 className="text-2xl mb-4 text-white">Sign Up</h2>
+      <form onSubmit={handleSubmit} className="space-y-4 text-white">
         <div>
           <label htmlFor="username">Username</label>
           <input
