@@ -4,43 +4,75 @@ import urlModel from "../models/url.model.js";
 export const createUrl = async (req, res) => {
   const { url, alias } = req.body;
 
-  if (!url || typeof url !== "string") {
-    return res
-      .status(400)
-      .json({ success: false, error: "Invalid URL provided." });
-  }
-
-  const cleanedUrl = url.trim();
-  const shortCode = nanoid(5);
-  const shortenedUrl = `${req.protocol}://${req.get(
-    "host"
-  )}/${shortCode}/${alias}`;
-
   try {
-    const existing = await urlModel.findOne({ shortCode });
-    if (existing) {
-      return res
-        .status(400)
-        .json({ success: false, error: "Alias is already taken." });
+    if (!url || typeof url !== "string") {
+      const error = new Error("Invalid URL provided.");
+      error.statusCode = 400;
+      throw error;
     }
 
-    await urlModel.create({
+    let shortCode;
+
+    const cleanedUrl = url.trim();
+
+    if (!alias) {
+      shortCode = nanoid(5);
+    } else {
+      let cleanedAlias = alias.trim();
+      let checkForSpecialCharacters = /\W/.test(cleanedAlias);
+
+      if (checkForSpecialCharacters) {
+        const error = new Error(
+          "Alias can not contain special characters. try using words"
+        );
+        error.statusCode = 400;
+        throw error;
+      }
+
+      shortCode = cleanedAlias;
+    }
+
+    const shortenedUrl = `${req.protocol}://${req.get("host")}/${shortCode}`;
+
+    const existing = await urlModel.findOne({ shortCode });
+
+    if (existing) {
+      const error = new Error("Alias is already taken.");
+      error.statusCode = 409;
+      throw error;
+    }
+
+    const newUrl = await urlModel.create({
       originalUrl: cleanedUrl,
       shortCode,
-      alias,
       shortUrl: shortenedUrl,
       userId: req.user ? req.user._id : null,
     });
 
-    return res.status(201).json({ success: true, data: shortenedUrl });
-  } catch (err) {
+    if (!newUrl) {
+      const error = new Error("could not shorten string something went wrong");
+      error.statusCode = 500;
+      throw error;
+    }
+
+    console.log(newUrl);
+
+    return res.status(201).json({ success: true, data: newUrl });
+  } catch (error) {
+    if (error.code === 11000) {
+      return res.status(409).json({
+        success: false,
+        error: "This short code already exists. Please try another alias.",
+      });
+    }
+
     return res
-      .status(500)
-      .json({ success: false, error: "Failed to shorten URL." });
+      .status(error.statusCode || 500)
+      .json({ success: false, error: error.message });
   }
 };
 
-export const getUser = async (req, res) => {
+export const getUrl = async (req, res) => {
   const { id } = req.params;
 
   let originalUrl = null;
