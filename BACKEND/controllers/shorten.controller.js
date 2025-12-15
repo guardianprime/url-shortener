@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import urlModel from "../models/url.model.js";
+import URL from "../models/url.model.js";
 import { BASE_URL } from "../configs/env.config.js";
 
 export const createUrl = async (req, res) => {
@@ -26,7 +26,30 @@ export const createUrl = async (req, res) => {
     let shortCode;
 
     if (!alias) {
-      shortCode = nanoid(5);
+      let attempts = 0;
+      const maxAttempts = 5;
+
+      while (attempts < maxAttempts) {
+        shortCode = nanoid(6);
+        const existing = await URL.findOne({ shortCode });
+
+        if (!existing) {
+          break;
+        }
+
+        attempts++;
+        console.log(
+          `Collision detected for ${shortCode}, retrying... (${attempts}/${maxAttempts})`
+        );
+      }
+
+      if (attempts === maxAttempts) {
+        const error = new Error(
+          "Unable to generate unique short code. Please try again."
+        );
+        error.statusCode = 500;
+        throw error;
+      }
     } else {
       const cleanedAlias = alias.trim();
 
@@ -48,12 +71,17 @@ export const createUrl = async (req, res) => {
     }
 
     const shortenedUrl = `${BASE_URL}/${shortCode}`;
+    console.log(
+      `cleanedurl: ${cleanedUrl}, shortCode: ${shortCode},   shortUrl: ${shortenedUrl}, userId: ${
+        req.user?._id || null
+      }`
+    );
 
-    const newUrl = await urlModel.create({
+    const newUrl = await URL.create({
       originalUrl: cleanedUrl,
       shortCode,
       shortUrl: shortenedUrl,
-      userId: req.user?._id || null, // ✅ Optional chaining
+      userId: req.user?._id || null,
     });
 
     return res.status(201).json({ success: true, data: newUrl });
