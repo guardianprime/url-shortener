@@ -1,68 +1,101 @@
 import { nanoid } from "nanoid";
-import urlModel from "../models/url.model.js";
+import Url from "../models/url.model.js";
+import { BASE_URL } from "../configs/env.config.js";
 
 export const createUrl = async (req, res) => {
   const { url, alias } = req.body;
+  const loggedUserId = req.user?.userId; // Remove || "empty"
 
   try {
-    if (!url || typeof url !== "string") {
+    const cleanedUrl = url?.trim();
+
+    if (!cleanedUrl || typeof cleanedUrl !== "string") {
       const error = new Error("Invalid URL provided.");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    const urlPattern =
+      /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/;
+
+    if (!urlPattern.test(cleanedUrl)) {
+      const error = new Error("Invalid URL format.");
       error.statusCode = 400;
       throw error;
     }
 
     let shortCode;
 
-    const cleanedUrl = url.trim();
-
     if (!alias) {
-      shortCode = nanoid(5);
-    } else {
-      let cleanedAlias = alias.trim();
-      let checkForSpecialCharacters = /\W/.test(cleanedAlias);
+      let attempts = 0;
+      const maxAttempts = 5;
 
-      if (checkForSpecialCharacters) {
+      while (attempts < maxAttempts) {
+        shortCode = nanoid(7);
+        const existing = await Url.findOne({ shortCode });
+
+        if (!existing) {
+          break;
+        }
+
+        attempts++;
+        console.log(
+          `Collision detected for ${shortCode}, retrying... (${attempts}/${maxAttempts})`
+        );
+      }
+
+      if (attempts === maxAttempts) {
         const error = new Error(
-          "Alias can not contain special characters. try using words"
+          "Unable to generate unique short code. Please try again."
+        );
+        error.statusCode = 500;
+        throw error;
+      }
+    } else {
+      const cleanedAlias = alias.trim();
+
+      if (!cleanedAlias) {
+        const error = new Error("Alias cannot be empty.");
+        error.statusCode = 400;
+        throw error;
+      }
+
+      if (/\W/.test(cleanedAlias)) {
+        const error = new Error(
+          "Alias cannot contain special characters. Try using words."
         );
         error.statusCode = 400;
         throw error;
       }
 
       shortCode = cleanedAlias;
+
+      // Add a check for existing alias
+      const existingAlias = await Url.findOne({ shortCode });
+      if (existingAlias) {
+        const error = new Error(
+          "This alias is already taken. Please try another one."
+        );
+        error.statusCode = 409;
+        throw error;
+      }
     }
 
-    const shortenedUrl = `${req.protocol}://${req.get("host")}/${shortCode}`;
+    const shortenedUrl = `${BASE_URL}/${shortCode}`;
 
-    const existing = await urlModel.findOne({ shortCode });
-
-    if (existing) {
-      const error = new Error("Alias is already taken.");
-      error.statusCode = 409;
-      throw error;
-    }
-
-    const newUrl = await urlModel.create({
+    const newUrl = await Url.create({
       originalUrl: cleanedUrl,
       shortCode,
       shortUrl: shortenedUrl,
-      userId: req.user ? req.user._id : null,
+      ...(loggedUserId && { userId: loggedUserId }), // Only include if defined
     });
-
-    if (!newUrl) {
-      const error = new Error("could not shorten string something went wrong");
-      error.statusCode = 500;
-      throw error;
-    }
-
-    console.log(newUrl);
 
     return res.status(201).json({ success: true, data: newUrl });
   } catch (error) {
     if (error.code === 11000) {
       return res.status(409).json({
         success: false,
-        error: "This short code already exists. Please try another alias.",
+        error: "This alias is already taken. Please try another one.",
       });
     }
 
