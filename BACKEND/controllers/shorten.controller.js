@@ -1,9 +1,10 @@
 import { nanoid } from "nanoid";
-import URL from "../models/url.model.js";
+import Url from "../models/url.model.js";
 import { BASE_URL } from "../configs/env.config.js";
 
 export const createUrl = async (req, res) => {
   const { url, alias } = req.body;
+  const loggedUserId = req.user?.userId; // Remove || "empty"
 
   try {
     const cleanedUrl = url?.trim();
@@ -30,8 +31,8 @@ export const createUrl = async (req, res) => {
       const maxAttempts = 5;
 
       while (attempts < maxAttempts) {
-        shortCode = nanoid(6);
-        const existing = await URL.findOne({ shortCode });
+        shortCode = nanoid(7);
+        const existing = await Url.findOne({ shortCode });
 
         if (!existing) {
           break;
@@ -68,20 +69,25 @@ export const createUrl = async (req, res) => {
       }
 
       shortCode = cleanedAlias;
+
+      // Add a check for existing alias
+      const existingAlias = await Url.findOne({ shortCode });
+      if (existingAlias) {
+        const error = new Error(
+          "This alias is already taken. Please try another one."
+        );
+        error.statusCode = 409;
+        throw error;
+      }
     }
 
     const shortenedUrl = `${BASE_URL}/${shortCode}`;
-    console.log(
-      `cleanedurl: ${cleanedUrl}, shortCode: ${shortCode},   shortUrl: ${shortenedUrl}, userId: ${
-        req.user?._id || null
-      }`
-    );
 
-    const newUrl = await URL.create({
+    const newUrl = await Url.create({
       originalUrl: cleanedUrl,
       shortCode,
       shortUrl: shortenedUrl,
-      userId: req.user?._id || null,
+      ...(loggedUserId && { userId: loggedUserId }), // Only include if defined
     });
 
     return res.status(201).json({ success: true, data: newUrl });
