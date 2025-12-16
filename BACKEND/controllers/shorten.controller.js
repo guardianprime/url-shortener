@@ -4,7 +4,7 @@ import { BASE_URL } from "../configs/env.config.js";
 
 export const createUrl = async (req, res) => {
   const { url, alias } = req.body;
-  const loggedUserId = req.user?.userId; // Remove || "empty"
+  const loggedUserId = req.user?.userId;
 
   try {
     const cleanedUrl = url?.trim();

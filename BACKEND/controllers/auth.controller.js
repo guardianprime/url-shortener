@@ -50,7 +50,7 @@ export const signUpController = async (req, res, next) => {
   }
 };
 
-export const loginController = async (req, res, next) => {
+export const loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
@@ -82,7 +82,10 @@ export const loginController = async (req, res, next) => {
       },
     });
   } catch (error) {
-    next(error);
+    res.status(statusCode).json({
+      success: false,
+      error: error.message,
+    });
   }
 };
 

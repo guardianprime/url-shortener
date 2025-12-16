@@ -6,6 +6,7 @@ import Hamburger from "../components/Hamburger.jsx";
 function Signup() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -16,14 +17,17 @@ function Signup() {
     setError("");
 
     try {
-      const res = await fetch(`${API_BASE_URL}/signup`, {
+      const res = await fetch(`${API_BASE_URL}/api/v1/auth/signup`, {
         method: "POST",
-        credentials: "include", // keep for cookie-based auth
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, email, password }),
       });
+
+      const reply = await res.json(res);
+      console.log(reply);
 
       if (res.ok) {
         navigate("/");
@@ -57,7 +61,19 @@ function Signup() {
             required
           />
         </div>
-
+        <div>
+          <label htmlFor="email">Email</label>
+          <input
+            className="border p-2 block w-full"
+            type="email"
+            name="email"
+            placeholder="Enter email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            id="email"
+            required
+          />
+        </div>
         <div>
           <label htmlFor="password">Password</label>
           <input
