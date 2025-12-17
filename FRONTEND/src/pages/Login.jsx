@@ -1,13 +1,14 @@
-// pages/Login.jsx
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import API_BASE_URL from "../config/api.js";
 import Hamburger from "../components/Hamburger.jsx";
+import useAuth from "../contexts/AuthContext.jsx";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEyeSlash, faEye } from "@fortawesome/free-solid-svg-icons";
 
 const Login = () => {
+  const { setToken } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -30,6 +31,7 @@ const Login = () => {
       });
 
       const backendReply = await res.json();
+      setToken(backendReply.data.token);
       console.log(backendReply);
 
       if (res.ok) {

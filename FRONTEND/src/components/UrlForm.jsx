@@ -5,6 +5,7 @@ function UrlForm({ setHiddenToggle, hiddenToggle }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [shortenedUrl, setShortenedUrl] = useState("");
+  const [data, setData] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -28,7 +29,7 @@ function UrlForm({ setHiddenToggle, hiddenToggle }) {
       setError("");
       setShortenedUrl("");
 
-      const res = await fetch(`${API_BASE_URL}api/v1/shorten`, {
+      const res = await fetch(`${API_BASE_URL}/api/v1/shorten`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -42,8 +43,9 @@ function UrlForm({ setHiddenToggle, hiddenToggle }) {
         throw new Error(errorData.error || "Failed to shorten URL");
       }
 
-      const data = await res.json();
-      setShortenedUrl(data.shortenedUrl || "Shortened URL received");
+      const reply = await res.json();
+      setData(reply);
+      setShortenedUrl(reply.shortUrl || "Shortened URL received");
     } catch (err) {
       setError(err.message || "An error occurred");
     } finally {
@@ -57,7 +59,12 @@ function UrlForm({ setHiddenToggle, hiddenToggle }) {
       {error && <p className="text-red-500">❌ {error}</p>}
       {shortenedUrl ? (
         <form onSubmit={(e) => e.preventDefault()} id="shortenForm">
-          <input className="" name="longUrl " readOnly value={``} />
+          <input
+            className=""
+            name="longUrl "
+            readOnly
+            value={data.originalUrl}
+          />
           <input
             className="text-green-600 block border-2 rounded-sm w-full h-10 p-2 mt-2"
             readOnly

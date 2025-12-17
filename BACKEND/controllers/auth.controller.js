@@ -94,9 +94,39 @@ export const logoutController = (req, res) => {
 };
 
 export const checkUserStatusController = (req, res) => {
-  const isAuthenticated = false;
-  res.status(200).json({
-    success: true,
-    data: isAuthenticated,
-  });
+  try {
+    const authHeader = req.headers["authorization"];
+
+    if (!authHeader) {
+      res.status(200).json({
+        success: false,
+      });
+
+      if (!authHeader.startsWith("Bearer ")) {
+        const error = new Error("Authorization header must be Bearer");
+        error.statusCode = 401;
+        throw error;
+      }
+
+      const token = authHeader.split(" ")[1];
+
+      if (!token) {
+        res.status(200).json({
+          success: false,
+        });
+      }
+
+      const decoded = jwt.verify(token, JWT_SECRET);
+
+      res.status(200).json({
+        success: true,
+        data: decoded,
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      error: error,
+    });
+  }
 };

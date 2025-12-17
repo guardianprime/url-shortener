@@ -70,7 +70,6 @@ export const createUrl = async (req, res) => {
 
       shortCode = cleanedAlias;
 
-      // Add a check for existing alias
       const existingAlias = await Url.findOne({ shortCode });
       if (existingAlias) {
         const error = new Error(

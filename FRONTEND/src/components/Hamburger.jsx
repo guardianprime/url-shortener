@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import API_BASE_URL from "../config/api.js";
+import { useAuth } from "../contexts/AuthContext.jsx";
 
 export default function Hamburger({ home, urlpage }) {
   const [isNavOpen, setIsNavOpen] = useState(false);
@@ -8,24 +9,32 @@ export default function Hamburger({ home, urlpage }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const { token, setToken } = useAuth;
 
   useEffect(() => {
     const fetchUserStatus = async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/api/v1/auth/check`);
+        const res = await fetch(`${API_BASE_URL}/api/v1/auth/check`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-        const data = await res.json();
-
-        if (data.isAuthenticated) {
-          setIsAuthenticated(true);
-          setUser(data.user);
-        } else {
+        if (!res.ok) {
           setIsAuthenticated(false);
           setUser(null);
         }
+
+        const dataResponse = await res.json();
+
+        if (dataResponse.success) {
+          setIsAuthenticated(true);
+          setUser(dataResponse.decoded);
+          setToken(dataResponse.data.token);
+        }
       } catch (error) {
-        console.error("Auth check failed:", error);
-        setError("Failed to check authentication");
+        setError(error);
         setIsAuthenticated(false);
         setUser(null);
       } finally {
@@ -38,15 +47,17 @@ export default function Hamburger({ home, urlpage }) {
 
   const handleLogout = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/logout`, {
-        method: "POST",
-        credentials: "include",
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/v1/auth/logout`,
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
 
       if (res.ok) {
         setIsAuthenticated(false);
         setUser(null);
-        // Optionally redirect or show success message
       }
     } catch (error) {
       console.error("Logout failed:", error);
