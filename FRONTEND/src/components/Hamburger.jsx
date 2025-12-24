@@ -7,9 +7,7 @@ export default function Hamburger({ home, urlpage }) {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const { token, setToken } = useAuth;
+  const { token, setToken } = useAuth();
 
   useEffect(() => {
     const fetchUserStatus = async () => {
@@ -30,34 +28,30 @@ export default function Hamburger({ home, urlpage }) {
 
         if (dataResponse.success) {
           setIsAuthenticated(true);
-          setUser(dataResponse.decoded);
+          setUser(dataResponse.data.user.username);
           setToken(dataResponse.data.token);
         }
       } catch (error) {
-        setError(error);
+        console.log(error);
         setIsAuthenticated(false);
         setUser(null);
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchUserStatus();
-  }, []);
+  }, [token, setToken]);
 
   const handleLogout = async () => {
     try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/v1/auth/logout`,
-        {
-          method: "POST",
-          credentials: "include",
-        }
-      );
+      const res = await fetch(`${API_BASE_URL}/api/v1/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
 
       if (res.ok) {
         setIsAuthenticated(false);
         setUser(null);
+        setToken("");
       }
     } catch (error) {
       console.error("Logout failed:", error);
@@ -122,11 +116,7 @@ export default function Hamburger({ home, urlpage }) {
               )}
 
               <li className="border-b border-gray-400 my-8 uppercase">
-                {loading ? (
-                  <span>Loading...</span>
-                ) : error ? (
-                  <span className="text-red-500">Error</span>
-                ) : isAuthenticated ? (
+                {isAuthenticated ? (
                   <div className="flex flex-col items-center space-y-2">
                     <span className="text-sm text-white">
                       Welcome, {user?.email || user?.username || "User"}
@@ -161,11 +151,7 @@ export default function Hamburger({ home, urlpage }) {
           )}
 
           <li>
-            {loading ? (
-              <span>Loading...</span>
-            ) : error ? (
-              <span className="text-red-500">Error</span>
-            ) : isAuthenticated ? (
+            {isAuthenticated ? (
               <div className="flex items-center space-x-4">
                 <span className="text-sm text-white">
                   {user?.email || user?.username || "User"}
