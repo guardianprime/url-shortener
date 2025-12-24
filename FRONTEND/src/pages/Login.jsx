@@ -31,9 +31,9 @@ const Login = () => {
       });
 
       const backendReply = await res.json();
-      setToken(backendReply.data.token);
 
       if (res.ok) {
+        setToken(backendReply.data.token);
         navigate("/");
       } else {
         setError(backendReply.error);

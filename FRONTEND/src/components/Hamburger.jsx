@@ -10,6 +10,12 @@ export default function Hamburger({ home, urlpage }) {
   const { token, setToken } = useAuth();
 
   useEffect(() => {
+    if (!token) {
+      setIsAuthenticated(false);
+      setUser(null);
+      return;
+    }
+
     const fetchUserStatus = async () => {
       try {
         const res = await fetch(`${API_BASE_URL}/api/v1/auth/check`, {
@@ -22,14 +28,18 @@ export default function Hamburger({ home, urlpage }) {
         if (!res.ok) {
           setIsAuthenticated(false);
           setUser(null);
+          return;
         }
 
         const dataResponse = await res.json();
 
         if (dataResponse.success) {
           setIsAuthenticated(true);
-          setUser(dataResponse.data.user.username);
+          setUser(dataResponse.data.user);
           setToken(dataResponse.data.token);
+        } else {
+          setIsAuthenticated(false);
+          setUser(null);
         }
       } catch (error) {
         console.log(error);
@@ -55,6 +65,9 @@ export default function Hamburger({ home, urlpage }) {
       }
     } catch (error) {
       console.error("Logout failed:", error);
+      setToken("");
+      setIsAuthenticated(false);
+      setUser(null);
     }
   };
 
@@ -105,25 +118,23 @@ export default function Hamburger({ home, urlpage }) {
               )}
 
               {/* Show "My URLs" only if authenticated */}
-              {isAuthenticated && urlpage ? (
+              {isAuthenticated && urlpage && (
                 <li className="border-b border-gray-400 my-8 uppercase">
                   <Link to="/shorten/urls" className="text-white">
                     My URLs
                   </Link>
                 </li>
-              ) : (
-                ""
               )}
 
               <li className="border-b border-gray-400 my-8 uppercase">
                 {isAuthenticated ? (
-                  <div className="flex flex-col items-center space-y-2">
+                  <div className="flex flex-col items-center space-y-2 h-[80px] justify-between">
                     <span className="text-sm text-white">
-                      Welcome, {user?.email || user?.username || "User"}
+                      Welcome, {user?.username || user?.email || "User"}
                     </span>
                     <button
                       onClick={handleLogout}
-                      className="hover:text-amber-600"
+                      className="hover:text-amber-600 text-white text-lg"
                     >
                       Log Out
                     </button>

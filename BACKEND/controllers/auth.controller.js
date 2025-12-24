@@ -58,7 +58,7 @@ export const loginController = async (req, res) => {
     if (!user) {
       const error = new Error("User not found");
       error.statusCode = 400;
-      throw Error;
+      throw error;
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -82,9 +82,9 @@ export const loginController = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(statusCode).json({
+    res.status(error.statusCode || 500).json({
       success: false,
-      error: error.message,
+      error: error.message || error,
     });
   }
 };
@@ -93,40 +93,45 @@ export const logoutController = (req, res) => {
   res.send("this is the auth logout controller");
 };
 
-export const checkUserStatusController = (req, res) => {
+export const checkUserStatusController = async (req, res) => {
   try {
-    const authHeader = req.headers["authorization"];
+    // authMiddleware already verifies the token and sets req.user
+    const authHeader = req.headers["authorization"] || "";
 
-    if (!authHeader) {
-      res.status(200).json({
-        success: false,
-      });
-
-      if (!authHeader.startsWith("Bearer ")) {
-        const error = new Error("Authorization header must be Bearer");
-        error.statusCode = 401;
-        throw error;
-      }
-
-      const token = authHeader.split(" ")[1];
-
-      if (!token) {
-        res.status(200).json({
-          success: false,
-        });
-      }
-
-      const decoded = jwt.verify(token, JWT_SECRET);
-
-      res.status(200).json({
-        success: true,
-        data: decoded,
-      });
+    if (!authHeader.startsWith("Bearer ")) {
+      return res
+        .status(401)
+        .json({ success: false, error: "Authorization header must be Bearer" });
     }
-  } catch (error) {
-    res.status(400).json({
-      success: false,
-      error: error,
+
+    const token = authHeader.split(" ")[1];
+
+    if (!token) {
+      return res
+        .status(401)
+        .json({ success: false, message: "token can not be empty" });
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    // fetch user details (omit password)
+    const user = await User.findById(decoded.userId).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ success: false, error: "User not found" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "token verified successfully",
+      data: {
+        user,
+        token,
+      },
     });
+  } catch (error) {
+    return res
+      .status(error.statusCode || 401)
+      .json({ success: false, error: error.message || error });
   }
 };
