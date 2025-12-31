@@ -136,6 +136,12 @@ export const getUrls = async (req, res) => {
 
   try {
     const userUrls = await urlModel.find({ userId: req.user._id });
+    if (userUrls.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: "No URLs found for this user.",
+      });
+    }
 
     return res.json({
       success: true,

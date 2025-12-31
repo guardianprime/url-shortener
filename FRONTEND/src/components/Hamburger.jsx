@@ -120,7 +120,7 @@ export default function Hamburger({ home, urlpage }) {
               {/* Show "My URLs" only if authenticated */}
               {isAuthenticated && urlpage && (
                 <li className="border-b border-gray-400 my-8 uppercase">
-                  <Link to="/shorten/urls" className="text-white">
+                  <Link to="/myurls" className="text-white">
                     My URLs
                   </Link>
                 </li>
@@ -157,7 +157,7 @@ export default function Hamburger({ home, urlpage }) {
           {/* Show "My URLs" only if authenticated */}
           {isAuthenticated && (
             <li>
-              <Link to="/shorten/urls">My URLs</Link>
+              <Link to="/myurls">My URLs</Link>
             </li>
           )}
 
