@@ -72,9 +72,13 @@ function MyUrls() {
     setDeleting((prev) => ({ ...prev, [id]: true }));
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/v1/shorten/urls/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/v1/shorten/url/${id}`, {
         method: "DELETE",
         credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (!res.ok) {
