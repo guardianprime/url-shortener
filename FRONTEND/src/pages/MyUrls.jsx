@@ -22,12 +22,13 @@ function MyUrls() {
         });
 
         const backendReply = await res.json();
+        console.log("Fetched URLs:", backendReply);
         if (!res.ok) {
           setError(backendReply?.error || "Unknown error from server");
           return;
         }
 
-        setData(backendReply);
+        setData(backendReply.data);
       } catch (err) {
         setError(err.message || "Something went wrong.");
       } finally {
