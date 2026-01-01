@@ -4,7 +4,6 @@ import cors from "cors";
 import shortenRouter from "./routes/shorten.routes.js";
 import shortCodeRouter from "./routes/shortCode.routes.js";
 import authRouter from "./routes/auth.routes.js";
-import authMiddleware from "./middlewares/auth.middleware.js";
 import limiter from "./middlewares/limiter.middlewares.js";
 
 const app = express();
@@ -22,7 +21,7 @@ app.use(
 
 app.use("/api/v1/shorten", limiter, shortenRouter);
 app.use("/api/v1/auth", limiter, authRouter);
-app.use("/api/v1/:shortcode", limiter, authMiddleware, shortCodeRouter);
+app.use("/:shortcode", limiter, shortCodeRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
