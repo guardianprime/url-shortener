@@ -50,7 +50,7 @@ export const signUpController = async (req, res, next) => {
   }
 };
 
-export const loginController = async (req, res, next) => {
+export const loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
@@ -58,7 +58,7 @@ export const loginController = async (req, res, next) => {
     if (!user) {
       const error = new Error("User not found");
       error.statusCode = 400;
-      throw Error;
+      throw error;
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -82,7 +82,10 @@ export const loginController = async (req, res, next) => {
       },
     });
   } catch (error) {
-    next(error);
+    res.status(error.statusCode || 500).json({
+      success: false,
+      error: error.message || error,
+    });
   }
 };
 
@@ -90,10 +93,45 @@ export const logoutController = (req, res) => {
   res.send("this is the auth logout controller");
 };
 
-export const checkUserStatusController = (req, res) => {
-  const isAuthenticated = false;
-  res.status(200).json({
-    success: true,
-    data: isAuthenticated,
-  });
+export const checkUserStatusController = async (req, res) => {
+  try {
+    // authMiddleware already verifies the token and sets req.user
+    const authHeader = req.headers["authorization"] || "";
+
+    if (!authHeader.startsWith("Bearer ")) {
+      return res
+        .status(401)
+        .json({ success: false, error: "Authorization header must be Bearer" });
+    }
+
+    const token = authHeader.split(" ")[1];
+
+    if (!token) {
+      return res
+        .status(401)
+        .json({ success: false, message: "token can not be empty" });
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    // fetch user details (omit password)
+    const user = await User.findById(decoded.userId).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ success: false, error: "User not found" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "token verified successfully",
+      data: {
+        user,
+        token,
+      },
+    });
+  } catch (error) {
+    return res
+      .status(error.statusCode || 401)
+      .json({ success: false, error: error.message || error });
+  }
 };

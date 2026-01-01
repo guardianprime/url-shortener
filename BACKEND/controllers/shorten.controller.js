@@ -4,7 +4,7 @@ import { BASE_URL } from "../configs/env.config.js";
 
 export const createUrl = async (req, res) => {
   const { url, alias } = req.body;
-  const loggedUserId = req.user?.userId; // Remove || "empty"
+  const loggedUserId = req.user?.userId;
 
   try {
     const cleanedUrl = url?.trim();
@@ -70,7 +70,6 @@ export const createUrl = async (req, res) => {
 
       shortCode = cleanedAlias;
 
-      // Add a check for existing alias
       const existingAlias = await Url.findOne({ shortCode });
       if (existingAlias) {
         const error = new Error(
@@ -111,7 +110,7 @@ export const getUrl = async (req, res) => {
   let originalUrl = null;
 
   try {
-    const urlDoc = await urlModel.findById(id);
+    const urlDoc = await Url.findById(id);
 
     if (!urlDoc) {
       const error = new Error("This url does not exist");
@@ -128,6 +127,7 @@ export const getUrl = async (req, res) => {
 };
 
 export const getUrls = async (req, res) => {
+  console.log(req.user);
   if (!req.user || !req.user.userId) {
     return res.status(401).json({
       success: false,
@@ -136,7 +136,14 @@ export const getUrls = async (req, res) => {
   }
 
   try {
-    const userUrls = await urlModel.find({ userId: req.user._id });
+    const userUrls = await Url.find({ userId: req.user.userId });
+    console.log("urls found", userUrls);
+    if (userUrls.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: "No URLs found for this user.",
+      });
+    }
 
     return res.json({
       success: true,
@@ -147,8 +154,7 @@ export const getUrls = async (req, res) => {
       },
     });
   } catch (err) {
-    res.json({ error: "Error fetching user URLs:" });
-    return res.status(404).json({
+    return res.status(500).json({
       success: false,
       error: "Failed to retrieve URLs.",
     });
@@ -203,7 +209,7 @@ export const deleteUrl = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const deleted = await urlModel.findByIdAndDelete(id);
+    const deleted = await Url.findByIdAndDelete(id);
 
     if (!deleted) {
       return res.status(404).json({ success: false, error: "URL not found." });

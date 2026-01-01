@@ -20,7 +20,7 @@ app.use(
   })
 );
 
-app.use("/api/v1/shorten", limiter, authMiddleware, shortenRouter);
+app.use("/api/v1/shorten", limiter, shortenRouter);
 app.use("/api/v1/auth", limiter, authRouter);
 app.use("/api/v1/:shortcode", limiter, authMiddleware, shortCodeRouter);
 

@@ -1,44 +1,59 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import API_BASE_URL from "../config/api.js";
+import { useAuth } from "../contexts/AuthContext.jsx";
 
 export default function Hamburger({ home, urlpage }) {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const { token, setToken } = useAuth();
 
   useEffect(() => {
+    if (!token) {
+      setIsAuthenticated(false);
+      setUser(null);
+      return;
+    }
+
     const fetchUserStatus = async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/api/v1/auth/check`);
+        const res = await fetch(`${API_BASE_URL}/api/v1/auth/check`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-        const data = await res.json();
+        if (!res.ok) {
+          setIsAuthenticated(false);
+          setUser(null);
+          return;
+        }
 
-        if (data.isAuthenticated) {
+        const dataResponse = await res.json();
+
+        if (dataResponse.success) {
           setIsAuthenticated(true);
-          setUser(data.user);
+          setUser(dataResponse.data.user);
+          setToken(dataResponse.data.token);
         } else {
           setIsAuthenticated(false);
           setUser(null);
         }
       } catch (error) {
-        console.error("Auth check failed:", error);
-        setError("Failed to check authentication");
+        console.log(error);
         setIsAuthenticated(false);
         setUser(null);
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchUserStatus();
-  }, []);
+  }, [token, setToken]);
 
   const handleLogout = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/logout`, {
+      const res = await fetch(`${API_BASE_URL}/api/v1/auth/logout`, {
         method: "POST",
         credentials: "include",
       });
@@ -46,10 +61,13 @@ export default function Hamburger({ home, urlpage }) {
       if (res.ok) {
         setIsAuthenticated(false);
         setUser(null);
-        // Optionally redirect or show success message
+        setToken("");
       }
     } catch (error) {
       console.error("Logout failed:", error);
+      setToken("");
+      setIsAuthenticated(false);
+      setUser(null);
     }
   };
 
@@ -62,9 +80,9 @@ export default function Hamburger({ home, urlpage }) {
             className="HAMBURGER-ICON space-y-2"
             onClick={() => setIsNavOpen((prev) => !prev)}
           >
-            <span className="block h-0.5 w-8 animate-pulse bg-white"></span>
-            <span className="block h-0.5 w-8 animate-pulse bg-white"></span>
-            <span className="block h-0.5 w-8 animate-pulse bg-white"></span>
+            <span className="block h-0.5 w-8 bg-white"></span>
+            <span className="block h-0.5 w-8 bg-white"></span>
+            <span className="block h-0.5 w-8 bg-white"></span>
           </div>
 
           <div className={isNavOpen ? "showMenuNav" : "hideMenuNav"}>
@@ -100,29 +118,23 @@ export default function Hamburger({ home, urlpage }) {
               )}
 
               {/* Show "My URLs" only if authenticated */}
-              {isAuthenticated && urlpage ? (
+              {isAuthenticated && urlpage && (
                 <li className="border-b border-gray-400 my-8 uppercase">
-                  <Link to="/shorten/urls" className="text-white">
+                  <Link to="/myurls" className="text-white">
                     My URLs
                   </Link>
                 </li>
-              ) : (
-                ""
               )}
 
               <li className="border-b border-gray-400 my-8 uppercase">
-                {loading ? (
-                  <span>Loading...</span>
-                ) : error ? (
-                  <span className="text-red-500">Error</span>
-                ) : isAuthenticated ? (
-                  <div className="flex flex-col items-center space-y-2">
+                {isAuthenticated ? (
+                  <div className="flex flex-col items-center space-y-2 h-[80px] justify-between">
                     <span className="text-sm text-white">
-                      Welcome, {user?.email || user?.username || "User"}
+                      Welcome, {user?.username || user?.email || "User"}
                     </span>
                     <button
                       onClick={handleLogout}
-                      className="hover:text-amber-600"
+                      className="hover:text-amber-600 text-white text-lg"
                     >
                       Log Out
                     </button>
@@ -145,16 +157,12 @@ export default function Hamburger({ home, urlpage }) {
           {/* Show "My URLs" only if authenticated */}
           {isAuthenticated && (
             <li>
-              <Link to="/shorten/urls">My URLs</Link>
+              <Link to="/myurls">My URLs</Link>
             </li>
           )}
 
           <li>
-            {loading ? (
-              <span>Loading...</span>
-            ) : error ? (
-              <span className="text-red-500">Error</span>
-            ) : isAuthenticated ? (
+            {isAuthenticated ? (
               <div className="flex items-center space-x-4">
                 <span className="text-sm text-white">
                   {user?.email || user?.username || "User"}

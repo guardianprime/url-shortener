@@ -1,37 +1,43 @@
 import { useState, useEffect } from "react";
 import Hamburger from "../components/Hamburger";
 import API_BASE_URL from "../config/api.js";
+import { useAuth } from "../contexts/AuthContext.jsx";
 
 function MyUrls() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [deleting, setDeleting] = useState({}); // track deletion state
-  const [copied, setCopied] = useState({}); // track copied state
+  const [deleting, setDeleting] = useState({});
+  const [copied, setCopied] = useState({});
+  const { token } = useAuth();
 
   useEffect(() => {
-    fetchUrls();
-  }, []);
+    const fetchUrls = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/v1/shorten/urls`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-  const fetchUrls = async () => {
-    try {
-      const res = await fetch(`${API_BASE_URL}/shorten/urls`, {
-        credentials: "include",
-      });
+        const backendReply = await res.json();
+        console.log("Fetched URLs:", backendReply);
+        if (!res.ok) {
+          setError(backendReply?.error || "Unknown error from server");
+          return;
+        }
 
-      const backendReply = await res.json();
-      if (!res.ok) {
-        setError(backendReply?.error || "Unknown error from server");
-        return;
+        setData(backendReply.data);
+      } catch (err) {
+        setError(err.message || "Something went wrong.");
+      } finally {
+        setLoading(false);
       }
+    };
 
-      setData(backendReply);
-    } catch (err) {
-      setError(err.message || "Something went wrong.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    fetchUrls();
+  }, [token]);
 
   const handleCopy = async (urlId, shortUrl) => {
     try {
@@ -66,9 +72,13 @@ function MyUrls() {
     setDeleting((prev) => ({ ...prev, [id]: true }));
 
     try {
-      const res = await fetch(`${API_BASE_URL}/shorten/urls/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/v1/shorten/url/${id}`, {
         method: "DELETE",
         credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (!res.ok) {
