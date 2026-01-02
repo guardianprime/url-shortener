@@ -1,5 +1,6 @@
 import { useState } from "react";
 import API_BASE_URL from "../config/api.js";
+import { useAuth } from "../contexts/AuthContext.jsx";
 
 function UrlForm() {
   const [error, setError] = useState("");
@@ -9,6 +10,7 @@ function UrlForm() {
   const [urlInput, setUrlInput] = useState("");
   const [aliasInput, setAliasInput] = useState("");
   const [showCopyNotification, setShowCopyNotification] = useState(false);
+  const { token } = useAuth();
 
   async function handleSubmit() {
     const url = urlInput.trim();
@@ -30,11 +32,17 @@ function UrlForm() {
       setError("");
       setShortenedUrl("");
 
+      const headers = {
+        "Content-Type": "application/json",
+      };
+
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
       const res = await fetch(`${API_BASE_URL}/api/v1/shorten`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers,
         credentials: "include",
         body: JSON.stringify({ url, alias: alias || undefined }),
       });

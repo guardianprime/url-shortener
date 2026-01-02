@@ -1,5 +1,7 @@
 import { Router } from "express";
-import authMiddleware from "../middlewares/auth.middleware.js";
+import authMiddleware, {
+  optionalAuthMiddleware,
+} from "../middlewares/auth.middleware.js";
 
 import {
   createUrl,
@@ -11,7 +13,7 @@ import {
 
 const shortenRouter = Router();
 
-shortenRouter.post("/", createUrl);
+shortenRouter.post("/", optionalAuthMiddleware, createUrl);
 
 shortenRouter.get("/urls", authMiddleware, getUrls);
 
