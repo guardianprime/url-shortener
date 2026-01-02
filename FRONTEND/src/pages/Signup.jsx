@@ -27,7 +27,6 @@ function Signup() {
       });
 
       const reply = await res.json(res);
-      console.log(reply);
 
       if (res.ok) {
         navigate("/");

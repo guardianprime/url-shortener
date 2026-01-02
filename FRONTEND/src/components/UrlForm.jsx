@@ -1,18 +1,19 @@
 import { useState } from "react";
 import API_BASE_URL from "../config/api.js";
 
-function UrlForm({ setHiddenToggle, hiddenToggle }) {
+function UrlForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [shortenedUrl, setShortenedUrl] = useState("");
-  const [data, setData] = useState("");
+  const [originalUrl, setOriginalUrl] = useState("");
+  const [urlInput, setUrlInput] = useState("");
+  const [aliasInput, setAliasInput] = useState("");
+  const [showCopyNotification, setShowCopyNotification] = useState(false);
 
-  async function handleSubmit(e) {
-    e.preventDefault();
+  async function handleSubmit() {
+    const url = urlInput.trim();
 
-    const formData = new FormData(e.target);
-    const url = formData.get("url");
-    if (!url || url.trim() === "") {
+    if (!url) {
       setError("Please enter a valid URL.");
       return;
     }
@@ -22,7 +23,7 @@ function UrlForm({ setHiddenToggle, hiddenToggle }) {
       return;
     }
 
-    const alias = formData.get("alias");
+    const alias = aliasInput.trim();
 
     try {
       setLoading(true);
@@ -35,97 +36,143 @@ function UrlForm({ setHiddenToggle, hiddenToggle }) {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({ url, alias }),
+        body: JSON.stringify({ url, alias: alias || undefined }),
       });
 
       if (!res.ok) {
         const errorData = await res.json();
-        throw new Error(errorData.error || "Failed to shorten URL");
+
+        if (res.status === 400) {
+          throw new Error(errorData.error || "Invalid URL or alias provided");
+        } else if (res.status === 409) {
+          throw new Error(errorData.error || "This alias is already taken");
+        } else if (res.status === 401 || res.status === 403) {
+          throw new Error("Authentication required. Please log in.");
+        } else if (res.status >= 500) {
+          throw new Error("Server error. Please try again later.");
+        } else {
+          throw new Error(errorData.error || "Failed to shorten URL");
+        }
       }
 
       const reply = await res.json();
-      setData(reply);
-      setShortenedUrl(reply.shortUrl || "Shortened URL received");
+      console.log(reply);
+
+      setOriginalUrl(url);
+      setShortenedUrl(reply.data.shortUrl);
     } catch (err) {
-      setError(err.message || "An error occurred");
+      if (err.name === "TypeError" && err.message.includes("fetch")) {
+        setError("Network error. Please check your connection and try again.");
+      } else {
+        setError(err.message || "An error occurred");
+      }
     } finally {
       setLoading(false);
     }
   }
 
+  function handleCopy() {
+    navigator.clipboard.writeText(shortenedUrl);
+
+    setShowCopyNotification(true);
+    setTimeout(() => {
+      setShowCopyNotification(false);
+    }, 2000);
+  }
+
+  function handleReset() {
+    setShortenedUrl("");
+    setOriginalUrl("");
+    setUrlInput("");
+    setAliasInput("");
+    setError("");
+    setShowCopyNotification(false);
+  }
+
   return (
-    <div className="h-full p-2.5 bg-white rounded-xs">
+    <div className="h-full p-2.5 bg-white rounded-xs relative">
       {loading && <p>⏳ URL is being shortened...</p>}
       {error && <p className="text-red-500">❌ {error}</p>}
+
+      {showCopyNotification && (
+        <div className="absolute top-2 right-2 bg-green-500 text-white px-4 py-2 rounded-sm">
+          ✓ Copied to clipboard!
+        </div>
+      )}
+
       {shortenedUrl ? (
-        <form onSubmit={(e) => e.preventDefault()} id="shortenForm">
+        <div>
+          <label htmlFor="longUrl" className="text-sm text-gray-600">
+            Original URL
+          </label>
           <input
-            className=""
-            name="longUrl "
+            id="longUrl"
+            className="text-green-600 block border-2 rounded-sm w-full h-10 p-2 mt-2"
             readOnly
-            value={data.originalUrl}
+            value={originalUrl}
           />
+          <label
+            htmlFor="shortenedUrl"
+            className="text-sm text-gray-600 mt-4 block"
+          >
+            Shortened URL
+          </label>
           <input
+            id="shortenedUrl"
             className="text-green-600 block border-2 rounded-sm w-full h-10 p-2 mt-2"
             readOnly
             value={shortenedUrl}
-            name="shortenedUrl"
           />
           <div className="flex justify-between w-2/3 mx-auto">
             <button
-              className="border-2 mt-7 p-2 rounded-sm"
-              onClick={() => {
-                navigator.clipboard.writeText(shortenedUrl);
-                setHiddenToggle(!hiddenToggle);
-                setTimeout(() => {
-                  setHiddenToggle(false);
-                }, 2000);
-              }}
+              className="border-2 mt-7 p-2 rounded-sm hover:bg-gray-100 transition-colors"
+              onClick={handleCopy}
+              type="button"
             >
               Copy
             </button>
             <button
-              className="border-2 mt-7 p-2 rounded-sm"
-              onClick={() => {
-                setShortenedUrl("");
-                setError("");
-              }}
+              className="border-2 mt-7 p-2 rounded-sm hover:bg-gray-100 transition-colors"
+              onClick={handleReset}
+              type="button"
             >
               Shorten Another
             </button>
           </div>
-        </form>
+        </div>
       ) : (
-        <form onSubmit={handleSubmit} id="shortenForm">
+        <div>
           <label htmlFor="url" className="text-lg">
             Shorten your link
           </label>
           <input
             type="text"
             id="url"
-            name="url"
-            required
+            value={urlInput}
+            onChange={(e) => setUrlInput(e.target.value)}
             className="block border-2 rounded-sm w-full h-10 p-2 mt-2"
             placeholder="Enter a long link here"
           />
-          <label htmlFor="alias" className="mt-4 text-lg">
+          <label htmlFor="alias" className="mt-4 text-lg block">
             <i className="fa-solid fa-wand-magic-sparkles"></i>
             <span> Customize your link</span>
           </label>
           <input
             type="text"
             id="alias"
-            name="alias"
-            className="block border-2  rounded-sm w-full h-10 p-2 mt-2"
+            value={aliasInput}
+            onChange={(e) => setAliasInput(e.target.value)}
+            className="block border-2 rounded-sm w-full h-10 p-2 mt-2"
             placeholder="Enter alias (optional)"
           />
           <button
-            type="submit"
-            className="border-2 mt-7 p-2 rounded-sm block mx-auto"
+            onClick={handleSubmit}
+            className="border-2 mt-7 p-2 rounded-sm block mx-auto hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={loading}
           >
-            Shorten URL
+            {loading ? "Shortening..." : "Shorten URL"}
           </button>
-        </form>
+        </div>
       )}
     </div>
   );
