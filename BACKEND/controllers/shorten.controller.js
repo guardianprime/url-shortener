@@ -86,7 +86,7 @@ export const createUrl = async (req, res) => {
       originalUrl: cleanedUrl,
       shortCode,
       shortUrl: shortenedUrl,
-      ...(loggedUserId && { userId: loggedUserId }), // Only include if defined
+      ...(loggedUserId && { userId: loggedUserId }),
     });
 
     return res.status(201).json({ success: true, data: newUrl });
@@ -127,7 +127,6 @@ export const getUrl = async (req, res) => {
 };
 
 export const getUrls = async (req, res) => {
-  console.log(req.user);
   if (!req.user || !req.user.userId) {
     return res.status(401).json({
       success: false,
@@ -137,7 +136,6 @@ export const getUrls = async (req, res) => {
 
   try {
     const userUrls = await Url.find({ userId: req.user.userId });
-    console.log("urls found", userUrls);
     if (userUrls.length === 0) {
       return res.status(404).json({
         success: false,

@@ -19,7 +19,6 @@ export const signUpController = async (req, res, next) => {
       throw error;
     }
 
-    //  hash pssword
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -95,7 +94,6 @@ export const logoutController = (req, res) => {
 
 export const checkUserStatusController = async (req, res) => {
   try {
-    // authMiddleware already verifies the token and sets req.user
     const authHeader = req.headers["authorization"] || "";
 
     if (!authHeader.startsWith("Bearer ")) {
@@ -114,7 +112,6 @@ export const checkUserStatusController = async (req, res) => {
 
     const decoded = jwt.verify(token, JWT_SECRET);
 
-    // fetch user details (omit password)
     const user = await User.findById(decoded.userId).select("-password");
 
     if (!user) {

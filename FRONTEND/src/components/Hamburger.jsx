@@ -42,7 +42,6 @@ export default function Hamburger({ home, urlpage }) {
           setUser(null);
         }
       } catch (error) {
-        console.log(error);
         setIsAuthenticated(false);
         setUser(null);
       }

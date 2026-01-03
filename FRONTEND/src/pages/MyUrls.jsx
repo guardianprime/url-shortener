@@ -22,7 +22,6 @@ function MyUrls() {
         });
 
         const backendReply = await res.json();
-        console.log("Fetched URLs:", backendReply);
         if (!res.ok) {
           setError(backendReply?.error || "Unknown error from server");
           return;
@@ -43,15 +42,12 @@ function MyUrls() {
     try {
       await navigator.clipboard.writeText(shortUrl);
 
-      // Set copied state for this specific URL
       setCopied((prev) => ({ ...prev, [urlId]: true }));
 
-      // Reset the copied state after 2 seconds
       setTimeout(() => {
         setCopied((prev) => ({ ...prev, [urlId]: false }));
       }, 2000);
     } catch (err) {
-      // Fallback for older browsers or if clipboard API fails
       const textArea = document.createElement("textarea");
       textArea.value = shortUrl;
       document.body.appendChild(textArea);
@@ -86,7 +82,6 @@ function MyUrls() {
         alert(reply?.error || "Failed to delete.");
         return;
       }
-      // Remove the deleted URL from state
       setData((prev) => ({
         ...prev,
         urls: prev.urls.filter((url) => url._id !== id),

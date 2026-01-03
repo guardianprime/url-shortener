@@ -1,18 +1,23 @@
 import UrlForm from "./UrlForm";
-import { useState } from "react";
 
 function Herosection() {
-  const [hiddenToggle, setHiddenToggle] = useState(false);
   return (
     <section className="h-2/5 bg-[#f9cff2] p-5 relative">
-      {hiddenToggle && (
-        <div
-          className={`bg-green-100 text-white p-2 rounded-md absolute bottom-0 `}
-        >
-          text copied to clipboard
+      <div>
+        <h1>Url shortener, QR code and link analytics</h1>
+        <div className="text-lg mt-4 max-w-xl">
+          <p>
+            Shorten, brand, and manage your links with our all-in-one URL
+            shortening platform. Create custom short URLs and QR codes to boost
+            your brand visibility and track link performance with detailed
+            analytics.
+          </p>
         </div>
-      )}
-      <UrlForm setHiddenToggle={setHiddenToggle} hiddenToggle={hiddenToggle} />
+        <div>
+          <button>Create free account</button>
+        </div>
+      </div>
+      <UrlForm />
     </section>
   );
 }
