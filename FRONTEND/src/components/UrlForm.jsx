@@ -64,7 +64,6 @@ function UrlForm() {
       }
 
       const reply = await res.json();
-      console.log(reply);
 
       setOriginalUrl(url);
       setShortenedUrl(reply.data.shortUrl);

@@ -51,10 +51,20 @@ function Details() {
           original URL from the database and redirects the visitor there.
         </p>
 
-        <p className="mt-6 italic text-sm text-gray-600">
+        <p className="mt-6 italic text-sm">
           Built for speed, simplicity, and reliability — this tool helps you
           share cleaner links with ease.
         </p>
+      </div>
+      <div>
+        <h4>Ready for shorter smarter links?</h4>
+        <p>
+          Transform your online presence with our powerful URL shortening
+          solution. Create a free account see the magic firsthand
+        </p>
+        <div>
+          <button>Create Free Account</button>
+        </div>
       </div>
     </>
   );
