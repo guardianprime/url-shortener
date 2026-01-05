@@ -2,7 +2,7 @@ import UrlForm from "./UrlForm";
 
 function Herosection() {
   return (
-    <section className="h-2/5 bg-[#f9cff2] p-5 relative">
+    <section className="h-full w-full bg-[#f9cff2] p-5">
       <div>
         <h1>Url shortener, QR code and link analytics</h1>
         <div className="text-lg mt-4 max-w-xl">

@@ -1,8 +1,8 @@
 function Footer() {
   return (
-    <footer className="h-40 flex flex-col items-center justify-around text-center text-white text-lg p-5">
+    <footer className="h-40 w-full flex flex-col items-center justify-around text-center text-white text-lg p-5 bg-fuchsia-950">
       <p>© 2024 Url Shortener. All rights reserved.</p>
-      <div className="flex gap-6">
+      <div className="flex gap-6 flex-wrap">
         <a href="/about" className="hover:underline">
           About
         </a>
@@ -19,7 +19,7 @@ function Footer() {
       <div>
         <p>made with love by guardianprime</p>
         <div>
-          <ul>
+          <ul className="h-10  flex justify-center gap-4 mt-2 bg-black">
             <li>
               <a href="https://github.com/guardianprime">f</a>
             </li>

@@ -97,7 +97,7 @@ function UrlForm() {
   }
 
   return (
-    <div className="h-full p-2.5 bg-white rounded-xs relative">
+    <div className="p-2.5 bg-white rounded-xs">
       {loading && <p>⏳ URL is being shortened...</p>}
       {error && <p className="text-red-500">❌ {error}</p>}
 
