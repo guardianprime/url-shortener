@@ -1,6 +1,6 @@
 function Footer() {
   return (
-    <footer className="h-40 w-full flex flex-col items-center justify-around text-center text-white text-lg p-5 bg-fuchsia-950">
+    <footer className="h-40 w-full flex flex-col items-center justify-around text-center text-white text-lg p-5 bg-sky-600">
       <p>© 2024 Url Shortener. All rights reserved.</p>
       <div className="flex gap-6 flex-wrap">
         <a href="/about" className="hover:underline">

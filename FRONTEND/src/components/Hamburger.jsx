@@ -44,6 +44,7 @@ export default function Hamburger({ home, urlpage }) {
       } catch (error) {
         setIsAuthenticated(false);
         setUser(null);
+        console.log(error);
       }
     };
 
@@ -71,8 +72,8 @@ export default function Hamburger({ home, urlpage }) {
   };
 
   return (
-    <div className="flex items-center justify-between border-b border-gray-400 py-5 px-2 bg-[#031f39]">
-      <div className="bg-[#FF5F1F] text-white p-1">SMALLURL</div>
+    <div className="flex items-center justify-between border-b border-gray-400 py-5 px-2 bg-sky-600">
+      <div className=" text-white p-1 font-[Open_Sans] text-lg">SMALLURL</div>
       <nav>
         <section className="MOBILE-MENU flex lg:hidden">
           <div
