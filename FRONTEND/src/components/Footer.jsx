@@ -1,6 +1,6 @@
 function Footer() {
   return (
-    <footer className="h-40 w-full flex flex-col items-center justify-around text-center text-white text-lg p-5 bg-sky-600">
+    <footer className="h-1/4 w-full flex flex-col items-center justify-around text-center text-white text-lg p-5 bg-sky-600">
       <p>© 2024 Url Shortener. All rights reserved.</p>
       <div className="flex gap-6 flex-wrap">
         <a href="/about" className="hover:underline">
@@ -16,21 +16,19 @@ function Footer() {
           Contact
         </a>
       </div>
-      <div>
-        <p>made with love by guardianprime</p>
-        <div>
-          <ul className="h-10  flex justify-center gap-4 mt-2 bg-black">
-            <li>
-              <a href="https://github.com/guardianprime">f</a>
-            </li>
-            <li>
-              <a href="https://x.com/guardianprime">x</a>
-            </li>
-            <li>
-              <a href="https://linkedin.com/in/guardianprime">ln</a>
-            </li>
-          </ul>
-        </div>
+      <p>made with love by guardianprime</p>
+      <div className="h-1/4 w-full">
+        <ul className="h-full w-full  flex justify-center gap-4 mt-2 bg-black">
+          <li>
+            <a href="https://github.com/guardianprime">f</a>
+          </li>
+          <li>
+            <a href="https://x.com/guardianprime">x</a>
+          </li>
+          <li>
+            <a href="https://linkedin.com/in/guardianprime">ln</a>
+          </li>
+        </ul>
       </div>
     </footer>
   );
