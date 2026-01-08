@@ -132,10 +132,3 @@ export const checkUserStatusController = async (req, res) => {
       .json({ success: false, error: error.message || error });
   }
 };
-
-export const googleController = (req, res) => {
-  res.send("google controller");
-};
-export const googleCallbackController = (req, res) => {
-  res.send("google callback controller");
-};
