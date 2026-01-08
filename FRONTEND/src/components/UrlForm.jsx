@@ -97,7 +97,7 @@ function UrlForm() {
   }
 
   return (
-    <div className="h-full p-2.5 bg-white rounded-xs relative">
+    <div className="p-2.5 bg-white rounded-xs mt-4">
       {loading && <p>⏳ URL is being shortened...</p>}
       {error && <p className="text-red-500">❌ {error}</p>}
 
@@ -179,6 +179,10 @@ function UrlForm() {
           >
             {loading ? "Shortening..." : "Shorten URL"}
           </button>
+          <p className="text-sm italic text-center mt-3">
+            By clicking shorten url you agree to our terms of service, privacy
+            policy and Use of Cookies.
+          </p>
         </div>
       )}
     </div>
