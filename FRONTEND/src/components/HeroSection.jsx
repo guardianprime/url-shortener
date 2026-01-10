@@ -1,8 +1,11 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import UrlForm from "./UrlForm";
+import QrForm from "./qrForm";
 
 function Herosection() {
   const navigate = useNavigate();
+  const [formToggle, setFormToggle] = useState(false);
 
   function handleRedirect() {
     navigate("/signup");
@@ -11,6 +14,7 @@ function Herosection() {
   function handleTestbtn() {
     navigate("/about");
   }
+
   return (
     <section className="h-full w-full bg-[#031f39] p-5 ">
       <div className="text-white">
@@ -42,7 +46,31 @@ function Herosection() {
           </button>
         </div>
       </div>
-      <UrlForm />
+      <div className="mt-5 text-white text-2xl flex h-15">
+        <button
+          className="w-3/5 rounded-t-xl h-full "
+          style={
+            formToggle
+              ? { backgroundColor: "red" }
+              : { backgroundColor: "blue" }
+          }
+          onClick={() => setFormToggle(false)}
+        >
+          shorten a link
+        </button>
+        <button
+          className="w-2/5 rounded-t-xl h-full"
+          style={
+            formToggle
+              ? { backgroundColor: "blue" }
+              : { backgroundColor: "red" }
+          }
+          onClick={() => setFormToggle(true)}
+        >
+          QR code
+        </button>
+      </div>
+      {formToggle ? <QrForm /> : <UrlForm />}
     </section>
   );
 }

@@ -97,7 +97,7 @@ function UrlForm() {
   }
 
   return (
-    <div className="p-2.5 bg-white rounded-xs mt-4">
+    <div className="p-2.5 bg-white rounded-b-md">
       {loading && <p>⏳ URL is being shortened...</p>}
       {error && <p className="text-red-500">❌ {error}</p>}
 
@@ -150,7 +150,7 @@ function UrlForm() {
       ) : (
         <div>
           <label htmlFor="url" className="text-lg">
-            Shorten your link
+            Long URL
           </label>
           <input
             type="text"
@@ -162,7 +162,7 @@ function UrlForm() {
           />
           <label htmlFor="alias" className="mt-4 text-lg block">
             <i className="fa-solid fa-wand-magic-sparkles"></i>
-            <span> Customize your link</span>
+            <span>Alias (optional)</span>
           </label>
           <input
             type="text"

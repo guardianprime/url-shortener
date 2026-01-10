@@ -88,7 +88,7 @@ function QrForm() {
   }
 
   return (
-    <div className="p-2.5 bg-white rounded-xs mt-4">
+    <div className="p-2.5 bg-white rounded-b-md">
       {loading && <p>⏳ QR code is being generated...</p>}
       {error && <p className="text-red-500">❌ {error}</p>}
 
