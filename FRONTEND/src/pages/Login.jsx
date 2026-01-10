@@ -53,7 +53,6 @@ const Login = () => {
   }
 
   function handleGoogleLogin() {
-    console.log("btn working");
     window.location.href = "http://localhost:8000/api/v1/auth/google";
   }
 
@@ -134,7 +133,7 @@ const Login = () => {
         </form>
         <h3 className="text-center mt-3">Or Sign in using</h3>
         <button
-          className="border-1 border-black h-12 mt-5 rounded-md w-1/3 mx-auto flex justify-between p-2 items-center"
+          className="border-1 border-black h-12 mt-2 rounded-md w-1/3 mx-auto flex justify-between p-2 items-center"
           onClick={handleGoogleLogin}
         >
           <img
