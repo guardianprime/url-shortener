@@ -53,7 +53,7 @@ const Login = () => {
   }
 
   function handleGoogleLogin() {
-    window.location.href = "http://localhost:5000/api/auth/google";
+    window.location.href = "http://localhost:8000/api/v1/auth/google";
   }
 
   useEffect(() => {
@@ -132,23 +132,17 @@ const Login = () => {
           {error && <p className="text-red-500">{error}</p>}
         </form>
         <h3 className="text-center mt-3">Or Sign in using</h3>
-        <div
-          className="border-1 border-black h-12 mt-5 rounded-md w-1/3 mx-auto flex justify-between p-2"
-          onClick={() => {
-            handleGoogleLogin;
-          }}
+        <button
+          className="border-1 border-black h-12 mt-2 rounded-md w-1/3 mx-auto flex justify-between p-2 items-center"
+          onClick={handleGoogleLogin}
         >
-          <div className="w-1/2 flex justify-center flex-col">
-            {/* TODO */}
-            {/* google authentication button */}
-            <img
-              src="/icons/google-icon.svg"
-              alt="google logo"
-              style={{ width: "24px", height: "24px" }}
-            />
-          </div>
+          <img
+            src="/icons/google-icon.svg"
+            alt="google logo"
+            style={{ width: "24px", height: "24px" }}
+          />
           <span className="text-xl mb-0.5">Google</span>
-        </div>
+        </button>
       </div>
       <Footer />
     </div>

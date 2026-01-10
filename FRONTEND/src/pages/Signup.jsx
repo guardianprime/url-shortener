@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import API_BASE_URL from "../config/api.js";
 import Hamburger from "../components/Hamburger.jsx";
@@ -40,6 +40,20 @@ function Signup() {
       setIsLoading(false);
     }
   };
+
+  function handleGoogleLogin() {
+    window.location.href = "http://localhost:8000/api/v1/auth/google";
+  }
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+
+    if (token) {
+      localStorage.setItem("token", token);
+      navigate("/myurls");
+    }
+  }, [navigate]);
 
   return (
     <div className="h-full">
@@ -103,6 +117,18 @@ function Signup() {
             {isLoading ? "Signing up..." : "Sign Up"}
           </button>
         </form>
+        <h3 className="text-center mt-3">Or Sign in using</h3>
+        <button
+          className="border-1 border-black h-12 mt-2 rounded-md w-1/3 mx-auto flex justify-between p-2 items-center"
+          onClick={handleGoogleLogin}
+        >
+          <img
+            src="/icons/google-icon.svg"
+            alt="google logo"
+            style={{ width: "24px", height: "24px" }}
+          />
+          <span className="text-xl mb-0.5">Google</span>
+        </button>
       </div>
       <Footer />
     </div>

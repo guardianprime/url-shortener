@@ -1,6 +1,16 @@
+import { useNavigate } from "react-router-dom";
 import UrlForm from "./UrlForm";
 
 function Herosection() {
+  const navigate = useNavigate();
+
+  function handleRedirect() {
+    navigate("/signup");
+  }
+
+  function handleTestbtn() {
+    navigate("/about");
+  }
   return (
     <section className="h-full w-full bg-[#031f39] p-5 ">
       <div className="text-white">
@@ -18,10 +28,16 @@ function Herosection() {
           </p>
         </div>
         <div className="flex w-full h-30 justify-between flex-col mt-2">
-          <button className="p-3 h-2/5 outline-white w-full outline-1">
+          <button
+            className="p-3 h-2/5 outline-white w-full outline-1"
+            onClick={handleRedirect}
+          >
             Create free account
           </button>
-          <button className="p-3 h-2/5 w-full bg-white text-[#031f39]">
+          <button
+            className="p-3 h-2/5 w-full bg-white text-[#031f39]"
+            onClick={handleTestbtn}
+          >
             Test for free
           </button>
         </div>

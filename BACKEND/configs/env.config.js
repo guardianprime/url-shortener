@@ -8,6 +8,6 @@ export const {
   JWT_SECRET,
   JWT_EXPIRES_IN,
   BASE_URL,
-  GOOGLE_CLIENT_SECRET,
-  GOOGLE_CLIENT_ID,
+  CLIENT_SECRET,
+  CLIENT_ID,
 } = process.env;
