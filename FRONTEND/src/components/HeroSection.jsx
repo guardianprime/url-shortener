@@ -38,7 +38,7 @@ function Herosection() {
             className="p-3 h-2/5 w-full bg-white text-[#031f39]"
             onClick={handleTestbtn}
           >
-            Test for free
+            Test qrCode for free
           </button>
         </div>
       </div>
