@@ -68,7 +68,7 @@ const Login = () => {
 
   return (
     <div className="h-full bg-white">
-      <Hamburger home={true} urlpage={false} />
+      <Hamburger home={true} urlpage={false} signin={false} />
       <div className="p-4 h-2/3">
         <h1 className="text-4xl mb-4 text-black">Log in</h1>
         <p className="text-black">

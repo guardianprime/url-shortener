@@ -16,7 +16,7 @@ function Herosection() {
   }
 
   return (
-    <section className="h-full w-full bg-[#031f39] p-5 ">
+    <section className="h-full w-full bg-[#031f39] p-5">
       <div className="text-white">
         <h1 className="text-4xl font-bold">
           URL shortener, QR code and link analytics
@@ -52,22 +52,22 @@ function Herosection() {
           style={
             formToggle
               ? { backgroundColor: "red" }
-              : { backgroundColor: "blue" }
+              : { backgroundColor: "white", color: "black" }
           }
           onClick={() => setFormToggle(false)}
         >
-          shorten a link
+          Shorten a Link
         </button>
         <button
           className="w-2/5 rounded-t-xl h-full"
           style={
             formToggle
-              ? { backgroundColor: "blue" }
+              ? { backgroundColor: "white", color: "black" }
               : { backgroundColor: "red" }
           }
           onClick={() => setFormToggle(true)}
         >
-          QR code
+          QR Code
         </button>
       </div>
       {formToggle ? <QrForm /> : <UrlForm />}

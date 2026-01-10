@@ -172,6 +172,7 @@ function UrlForm() {
             className="block border-2 rounded-sm w-full h-10 p-2 mt-2"
             placeholder="Enter alias (optional)"
           />
+          <p className="text-sm italic">must be atleast 5 letters</p>
           <button
             onClick={handleSubmit}
             className="border-2 mt-7 p-2 rounded-sm block mx-auto hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"

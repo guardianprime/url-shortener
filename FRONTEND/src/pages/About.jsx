@@ -10,7 +10,7 @@ import {
 function Details() {
   return (
     <>
-      <Hamburger home={true} />
+      <Hamburger home={true} about={false} />
       <div className="p-6 max-w-3xl mx-auto">
         <h1 className="text-2xl font-bold mb-4">How It Works</h1>
         <p className="mb-4">

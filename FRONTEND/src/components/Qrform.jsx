@@ -134,14 +134,14 @@ function QrForm() {
               onClick={handleReset}
               type="button"
             >
-              Shorten Another
+              Generate Another Qrcode
             </button>
           </div>
         </div>
       ) : (
         <div>
           <label htmlFor="url" className="text-lg">
-            Shorten your link
+            Destination url
           </label>
           <input
             type="text"
@@ -153,7 +153,7 @@ function QrForm() {
           />
           <label htmlFor="alias" className="mt-4 text-lg block">
             <i className="fa-solid fa-wand-magic-sparkles"></i>
-            <span> Customize your link</span>
+            <span>Alias (optional)</span>
           </label>
           <input
             type="text"
@@ -163,12 +163,13 @@ function QrForm() {
             className="block border-2 rounded-sm w-full h-10 p-2 mt-2"
             placeholder="Enter alias (optional)"
           />
+          <p className="italic text-sm">must be at least 5 letters</p>
           <button
             onClick={handleSubmit}
             className="border-2 mt-7 p-2 rounded-sm block mx-auto hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={loading}
           >
-            {loading ? "Shortening..." : "Shorten URL"}
+            {loading ? "Generating..." : "Generate QR code"}
           </button>
           <p className="text-sm italic text-center mt-3">
             By clicking shorten url you agree to our terms of service, privacy
