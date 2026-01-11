@@ -10,6 +10,8 @@ function QrForm() {
   const [originalUrl, setOriginalUrl] = useState("");
   const [urlInput, setUrlInput] = useState("");
   const [aliasInput, setAliasInput] = useState("");
+  const [qrCode, setQrCode] = useState("");
+
   const { token } = useAuth();
 
   async function handleSubmit() {
@@ -40,11 +42,17 @@ function QrForm() {
         headers["Authorization"] = `Bearer ${token}`;
       }
 
+      let generateQrCode = true;
+
       const res = await fetch(`${API_BASE_URL}/api/v1/shorten`, {
         method: "POST",
         headers,
         credentials: "include",
-        body: JSON.stringify({ url, alias: alias || undefined }),
+        body: JSON.stringify({
+          url,
+          alias: alias || undefined,
+          generateQrCode,
+        }),
       });
 
       if (!res.ok) {
@@ -67,6 +75,7 @@ function QrForm() {
 
       setOriginalUrl(url);
       setShortenedUrl(reply.data.shortUrl);
+      setQrCode(reply.data.qrCode);
     } catch (err) {
       if (err.name === "TypeError" && err.message.includes("fetch")) {
         setError("Network error. Please check your connection and try again.");
@@ -79,7 +88,6 @@ function QrForm() {
   }
 
   function handleShare() {
-    console.log("sharing btn is working");
     setDownloading(true);
   }
 
@@ -121,6 +129,13 @@ function QrForm() {
             readOnly
             value={shortenedUrl}
           />
+          <div>
+            <p>{shortenedUrl}</p>
+            <img src={qrCode} alt="QR Code" />
+            <a href={qrCode} download="qrcode.png">
+              Download QR
+            </a>
+          </div>
           <div className="flex justify-between w-2/3 mx-auto">
             <button
               className="border-2 mt-7 p-2 rounded-sm hover:bg-gray-100 transition-colors"

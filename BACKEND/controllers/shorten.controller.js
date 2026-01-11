@@ -1,9 +1,11 @@
 import { nanoid } from "nanoid";
+import QRCode from "qrcode";
 import Url from "../models/url.model.js";
 import { BASE_URL } from "../configs/env.config.js";
 
 export const createUrl = async (req, res) => {
-  const { url, alias } = req.body;
+  const { url, alias, generateQrCode } = req.body;
+
   const loggedUserId = req.user?.userId;
 
   try {
@@ -82,11 +84,20 @@ export const createUrl = async (req, res) => {
 
     const shortenedUrl = `${BASE_URL}/${shortCode}`;
 
+    let qrCode = null;
+
+    if (generateQrCode) {
+      qrCode = await QRCode.toDataURL(shortenedUrl);
+    }
+
+    console.log("this is the qrcode: ", qrCode);
+
     const newUrl = await Url.create({
       originalUrl: cleanedUrl,
       shortCode,
       shortUrl: shortenedUrl,
       ...(loggedUserId && { userId: loggedUserId }),
+      qrCode,
     });
 
     return res.status(201).json({ success: true, data: newUrl });

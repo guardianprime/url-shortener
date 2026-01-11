@@ -39,12 +39,17 @@ function UrlForm() {
       if (token) {
         headers["Authorization"] = `Bearer ${token}`;
       }
+      let generateQrCode = false;
 
       const res = await fetch(`${API_BASE_URL}/api/v1/shorten`, {
         method: "POST",
         headers,
         credentials: "include",
-        body: JSON.stringify({ url, alias: alias || undefined }),
+        body: JSON.stringify({
+          url,
+          alias: alias || undefined,
+          generateQrCode,
+        }),
       });
 
       if (!res.ok) {
