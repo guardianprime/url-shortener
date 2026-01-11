@@ -90,8 +90,6 @@ export const createUrl = async (req, res) => {
       qrCode = await QRCode.toDataURL(shortenedUrl);
     }
 
-    console.log("this is the qrcode: ", qrCode);
-
     const newUrl = await Url.create({
       originalUrl: cleanedUrl,
       shortCode,

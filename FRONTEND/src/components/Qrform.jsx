@@ -5,7 +5,6 @@ import API_BASE_URL from "../config/api";
 function QrForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [downloading, setDownloading] = useState(false);
   const [shortenedUrl, setShortenedUrl] = useState("");
   const [originalUrl, setOriginalUrl] = useState("");
   const [urlInput, setUrlInput] = useState("");
@@ -87,25 +86,18 @@ function QrForm() {
     }
   }
 
-  function handleShare() {
-    setDownloading(true);
-  }
-
   function handleReset() {
-    console.log("handle reset btn is working");
+    setShortenedUrl("");
+    setOriginalUrl("");
+    setUrlInput("");
+    setAliasInput("");
+    setError("");
   }
 
   return (
     <div className="p-2.5 bg-white rounded-b-md">
       {loading && <p>⏳ QR code is being generated...</p>}
       {error && <p className="text-red-500">❌ {error}</p>}
-
-      {downloading && (
-        <div className="absolute top-2 right-2 bg-green-500 text-white px-4 py-2 rounded-sm">
-          Qr code downloading...
-        </div>
-      )}
-
       {shortenedUrl ? (
         <div>
           <label htmlFor="longUrl" className="text-sm text-gray-600">
@@ -130,20 +122,12 @@ function QrForm() {
             value={shortenedUrl}
           />
           <div>
-            <p>{shortenedUrl}</p>
             <img src={qrCode} alt="QR Code" />
             <a href={qrCode} download="qrcode.png">
               Download QR
             </a>
           </div>
           <div className="flex justify-between w-2/3 mx-auto">
-            <button
-              className="border-2 mt-7 p-2 rounded-sm hover:bg-gray-100 transition-colors"
-              onClick={handleShare}
-              type="button"
-            >
-              share
-            </button>
             <button
               className="border-2 mt-7 p-2 rounded-sm hover:bg-gray-100 transition-colors"
               onClick={handleReset}
