@@ -57,7 +57,7 @@ function Signup() {
 
   return (
     <div className="h-full">
-      <Hamburger home={true} urlpage={false} />
+      <Hamburger home={true} urlpage={false} signin={false} />
       <div className="p-4 h-2/3">
         <h1 className="text-4xl mb-4 text-black">Sign Up</h1>
         <p className="mt-2">

@@ -39,12 +39,17 @@ function UrlForm() {
       if (token) {
         headers["Authorization"] = `Bearer ${token}`;
       }
+      let generateQrCode = false;
 
       const res = await fetch(`${API_BASE_URL}/api/v1/shorten`, {
         method: "POST",
         headers,
         credentials: "include",
-        body: JSON.stringify({ url, alias: alias || undefined }),
+        body: JSON.stringify({
+          url,
+          alias: alias || undefined,
+          generateQrCode,
+        }),
       });
 
       if (!res.ok) {
@@ -97,14 +102,14 @@ function UrlForm() {
   }
 
   return (
-    <div className="p-2.5 bg-white rounded-xs mt-4">
+    <div className="p-2.5 bg-white rounded-b-md">
       {loading && <p>⏳ URL is being shortened...</p>}
       {error && <p className="text-red-500">❌ {error}</p>}
 
       {showCopyNotification && (
-        <div className="absolute top-2 right-2 bg-green-500 text-white px-4 py-2 rounded-sm">
+        <p className="top-2 right-2 bg-green-500 text-white px-4 py-2 rounded-sm">
           ✓ Copied to clipboard!
-        </div>
+        </p>
       )}
 
       {shortenedUrl ? (
@@ -114,7 +119,7 @@ function UrlForm() {
           </label>
           <input
             id="longUrl"
-            className="text-green-600 block border-2 rounded-sm w-full h-10 p-2 mt-2"
+            className="text-green-600 block border-[#333333] border-1 rounded-sm w-full h-10 p-2 mt-2"
             readOnly
             value={originalUrl}
           />
@@ -126,7 +131,7 @@ function UrlForm() {
           </label>
           <input
             id="shortenedUrl"
-            className="text-green-600 block border-2 rounded-sm w-full h-10 p-2 mt-2"
+            className="text-green-600 block border-[#333333] border-1 rounded-sm w-full h-10 p-2 mt-2"
             readOnly
             value={shortenedUrl}
           />
@@ -150,31 +155,32 @@ function UrlForm() {
       ) : (
         <div>
           <label htmlFor="url" className="text-lg">
-            Shorten your link
+            Long URL
           </label>
           <input
             type="text"
             id="url"
             value={urlInput}
             onChange={(e) => setUrlInput(e.target.value)}
-            className="block border-2 rounded-sm w-full h-10 p-2 mt-2"
+            className="block border-[#333333] border-1 rounded-sm w-full h-10 p-2 mt-2"
             placeholder="Enter a long link here"
           />
           <label htmlFor="alias" className="mt-4 text-lg block">
             <i className="fa-solid fa-wand-magic-sparkles"></i>
-            <span> Customize your link</span>
+            <span>Alias (optional)</span>
           </label>
           <input
             type="text"
             id="alias"
             value={aliasInput}
             onChange={(e) => setAliasInput(e.target.value)}
-            className="block border-2 rounded-sm w-full h-10 p-2 mt-2"
+            className="block border-[#333333] border-1 rounded-sm w-full h-10 p-2 mt-2"
             placeholder="Enter alias (optional)"
           />
+          <p className="text-sm italic">must be atleast 5 letters</p>
           <button
             onClick={handleSubmit}
-            className="border-2 mt-7 p-2 rounded-sm block mx-auto hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-[#004799] text-white font-bold mt-7 p-2 rounded-sm block mx-auto hover:bg-gray-100 w-full"
             disabled={loading}
           >
             {loading ? "Shortening..." : "Shorten URL"}

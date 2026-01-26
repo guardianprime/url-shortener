@@ -17,6 +17,9 @@ const UrlSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    qrCode: {
+      type: String,
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

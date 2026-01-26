@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import API_BASE_URL from "../config/api.js";
 import { useAuth } from "../contexts/AuthContext.jsx";
 
-export default function Hamburger({ home, urlpage }) {
+export default function Hamburger({ home, about, signin, urlpage }) {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
@@ -104,11 +104,13 @@ export default function Hamburger({ home, urlpage }) {
               </svg>
             </div>
             <ul className="flex flex-col items-center justify-between min-h-[250px]">
-              <li className="border-b border-gray-400 my-8 uppercase">
-                <Link to="/about" className="text-white">
-                  About
-                </Link>
-              </li>
+              {about && (
+                <li className="border-b border-gray-400 my-8 uppercase">
+                  <Link to="/about" className="text-white">
+                    About
+                  </Link>
+                </li>
+              )}
               {home && (
                 <li className="border-b border-gray-400 my-8 uppercase">
                   <Link to="/" className="text-white">
@@ -139,9 +141,13 @@ export default function Hamburger({ home, urlpage }) {
                       Log Out
                     </button>
                   </div>
-                ) : (
+                ) : signin ? (
                   <Link to="/login" className="text-white">
                     Sign In
+                  </Link>
+                ) : (
+                  <Link to="/signup" className="text-white">
+                    Sign Up
                   </Link>
                 )}
               </li>

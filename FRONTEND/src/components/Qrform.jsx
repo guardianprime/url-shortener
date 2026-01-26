@@ -5,11 +5,12 @@ import API_BASE_URL from "../config/api";
 function QrForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [downloading, setDownloading] = useState(false);
   const [shortenedUrl, setShortenedUrl] = useState("");
   const [originalUrl, setOriginalUrl] = useState("");
   const [urlInput, setUrlInput] = useState("");
   const [aliasInput, setAliasInput] = useState("");
+  const [qrCode, setQrCode] = useState("");
+
   const { token } = useAuth();
 
   async function handleSubmit() {
@@ -40,11 +41,17 @@ function QrForm() {
         headers["Authorization"] = `Bearer ${token}`;
       }
 
+      let generateQrCode = true;
+
       const res = await fetch(`${API_BASE_URL}/api/v1/shorten`, {
         method: "POST",
         headers,
         credentials: "include",
-        body: JSON.stringify({ url, alias: alias || undefined }),
+        body: JSON.stringify({
+          url,
+          alias: alias || undefined,
+          generateQrCode,
+        }),
       });
 
       if (!res.ok) {
@@ -67,6 +74,7 @@ function QrForm() {
 
       setOriginalUrl(url);
       setShortenedUrl(reply.data.shortUrl);
+      setQrCode(reply.data.qrCode);
     } catch (err) {
       if (err.name === "TypeError" && err.message.includes("fetch")) {
         setError("Network error. Please check your connection and try again.");
@@ -78,26 +86,18 @@ function QrForm() {
     }
   }
 
-  function handleShare() {
-    console.log("sharing btn is working");
-    setDownloading(true);
-  }
-
   function handleReset() {
-    console.log("handle reset btn is working");
+    setShortenedUrl("");
+    setOriginalUrl("");
+    setUrlInput("");
+    setAliasInput("");
+    setError("");
   }
 
   return (
-    <div className="p-2.5 bg-white rounded-xs mt-4">
+    <div className="p-2.5 bg-white rounded-b-md">
       {loading && <p>⏳ QR code is being generated...</p>}
       {error && <p className="text-red-500">❌ {error}</p>}
-
-      {downloading && (
-        <div className="absolute top-2 right-2 bg-green-500 text-white px-4 py-2 rounded-sm">
-          Qr code downloading...
-        </div>
-      )}
-
       {shortenedUrl ? (
         <div>
           <label htmlFor="longUrl" className="text-sm text-gray-600">
@@ -105,7 +105,7 @@ function QrForm() {
           </label>
           <input
             id="longUrl"
-            className="text-green-600 block border-2 rounded-sm w-full h-10 p-2 mt-2"
+            className="text-green-600 block border-[#333333] border-1 rounded-sm w-full h-10 p-2 mt-2"
             readOnly
             value={originalUrl}
           />
@@ -117,58 +117,58 @@ function QrForm() {
           </label>
           <input
             id="shortenedUrl"
-            className="text-green-600 block border-2 rounded-sm w-full h-10 p-2 mt-2"
+            className="text-green-600 block border-[#333333] border-1 rounded-sm w-full h-10 p-2 mt-2"
             readOnly
             value={shortenedUrl}
           />
+          <div>
+            <img src={qrCode} alt="QR Code" />
+            <a href={qrCode} download="qrcode.png">
+              Download QR
+            </a>
+          </div>
           <div className="flex justify-between w-2/3 mx-auto">
-            <button
-              className="border-2 mt-7 p-2 rounded-sm hover:bg-gray-100 transition-colors"
-              onClick={handleShare}
-              type="button"
-            >
-              share
-            </button>
             <button
               className="border-2 mt-7 p-2 rounded-sm hover:bg-gray-100 transition-colors"
               onClick={handleReset}
               type="button"
             >
-              Shorten Another
+              Generate Another Qrcode
             </button>
           </div>
         </div>
       ) : (
         <div>
           <label htmlFor="url" className="text-lg">
-            Shorten your link
+            Destination url
           </label>
           <input
             type="text"
             id="url"
             value={urlInput}
             onChange={(e) => setUrlInput(e.target.value)}
-            className="block border-2 rounded-sm w-full h-10 p-2 mt-2"
+            className="block border-[#333333]  border-1 rounded-sm w-full h-10 p-2 mt-2"
             placeholder="Enter a long link here"
           />
           <label htmlFor="alias" className="mt-4 text-lg block">
             <i className="fa-solid fa-wand-magic-sparkles"></i>
-            <span> Customize your link</span>
+            <span>Alias (optional)</span>
           </label>
           <input
             type="text"
             id="alias"
             value={aliasInput}
             onChange={(e) => setAliasInput(e.target.value)}
-            className="block border-2 rounded-sm w-full h-10 p-2 mt-2"
+            className="block border-[#333333] border-1 rounded-sm w-full h-10 p-2 mt-2"
             placeholder="Enter alias (optional)"
           />
+          <p className="italic text-sm">must be at least 5 letters</p>
           <button
             onClick={handleSubmit}
-            className="border-2 mt-7 p-2 rounded-sm block mx-auto hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-[#004799] text-white w-full mt-7 p-2 rounded-sm block mx-auto hover:bg-gray-100 "
             disabled={loading}
           >
-            {loading ? "Shortening..." : "Shorten URL"}
+            {loading ? "Generating..." : "Generate QR code"}
           </button>
           <p className="text-sm italic text-center mt-3">
             By clicking shorten url you agree to our terms of service, privacy
