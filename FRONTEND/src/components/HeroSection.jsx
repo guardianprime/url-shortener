@@ -33,13 +33,13 @@ function Herosection() {
         </div>
         <div className="flex w-full h-30 justify-between flex-col mt-2">
           <button
-            className="p-3 h-2/5 outline-white w-full outline-1"
+            className="p-3 h-2/5 outline-white w-full outline-1 rounded-lg"
             onClick={handleRedirect}
           >
             Create free account
           </button>
           <button
-            className="p-3 h-2/5 w-full bg-white text-[#031f39]"
+            className="p-3 h-2/5 w-full bg-white text-[#031f39] rounded-lg"
             onClick={handleTestbtn}
           >
             Test qrCode for free
@@ -48,10 +48,10 @@ function Herosection() {
       </div>
       <div className="mt-5 text-white text-2xl flex h-15">
         <button
-          className="w-3/5 rounded-t-xl h-full "
+          className="w-3/5 rounded-t-xl h-full"
           style={
             formToggle
-              ? { backgroundColor: "red" }
+              ? { backgroundColor: "#004799", color: "white" }
               : { backgroundColor: "white", color: "black" }
           }
           onClick={() => setFormToggle(false)}
@@ -63,7 +63,7 @@ function Herosection() {
           style={
             formToggle
               ? { backgroundColor: "white", color: "black" }
-              : { backgroundColor: "red" }
+              : { backgroundColor: "#004799", color: "white" }
           }
           onClick={() => setFormToggle(true)}
         >

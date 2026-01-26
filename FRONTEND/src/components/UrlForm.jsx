@@ -119,7 +119,7 @@ function UrlForm() {
           </label>
           <input
             id="longUrl"
-            className="text-green-600 block border-2 rounded-sm w-full h-10 p-2 mt-2"
+            className="text-green-600 block border-[#333333] border-1 rounded-sm w-full h-10 p-2 mt-2"
             readOnly
             value={originalUrl}
           />
@@ -131,7 +131,7 @@ function UrlForm() {
           </label>
           <input
             id="shortenedUrl"
-            className="text-green-600 block border-2 rounded-sm w-full h-10 p-2 mt-2"
+            className="text-green-600 block border-[#333333] border-1 rounded-sm w-full h-10 p-2 mt-2"
             readOnly
             value={shortenedUrl}
           />
@@ -162,7 +162,7 @@ function UrlForm() {
             id="url"
             value={urlInput}
             onChange={(e) => setUrlInput(e.target.value)}
-            className="block border-2 rounded-sm w-full h-10 p-2 mt-2"
+            className="block border-[#333333] border-1 rounded-sm w-full h-10 p-2 mt-2"
             placeholder="Enter a long link here"
           />
           <label htmlFor="alias" className="mt-4 text-lg block">
@@ -174,13 +174,13 @@ function UrlForm() {
             id="alias"
             value={aliasInput}
             onChange={(e) => setAliasInput(e.target.value)}
-            className="block border-2 rounded-sm w-full h-10 p-2 mt-2"
+            className="block border-[#333333] border-1 rounded-sm w-full h-10 p-2 mt-2"
             placeholder="Enter alias (optional)"
           />
           <p className="text-sm italic">must be atleast 5 letters</p>
           <button
             onClick={handleSubmit}
-            className="border-2 mt-7 p-2 rounded-sm block mx-auto hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-[#004799] text-white font-bold mt-7 p-2 rounded-sm block mx-auto hover:bg-gray-100 w-full"
             disabled={loading}
           >
             {loading ? "Shortening..." : "Shorten URL"}

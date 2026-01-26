@@ -64,10 +64,14 @@ function ExplainSection() {
           </div>
         </div>
       </section>
-      <div className="w-full">
-        <img src="/images/random.jpg" alt="testtext" />
-        <div className="w-full text-center">
-          <h3 className="text-2xl">Link Shortening Done Quick and Easy</h3>
+      <div className="w-full bg-[#031f39] text-white">
+        <div>
+          <img src="/images/random.jpg" alt="someone using a tablet" />
+        </div>
+        <div className="w-full text-center p-5 h-100">
+          <h3 className="text-2xl font-bold">
+            Link Shortening Done Quick and Easy
+          </h3>
           <p>
             Our URL shortener is not only among the first-ever link shorteners
             on the Internet — it's the best out there. Shorten links for social
@@ -75,9 +79,13 @@ function ExplainSection() {
             online. Wave goodbye to long, clunky links and give your audiences
             the experiences they deserve!
           </p>
-          <div>
-            <button>Shorten a Link</button>
-            <button>Contact us</button>
+          <div className="w-full h-1/3 flex-col flex justify-around mt-3">
+            <button className="bg-white text-black w-full h-1/3 rounded-lg">
+              Shorten a Link
+            </button>
+            <button className="bg-[#0f62af] text-white w-full h-1/3 rounded-lg">
+              Contact us
+            </button>
           </div>
         </div>
       </div>
