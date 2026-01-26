@@ -7,15 +7,27 @@ function ExplainSection() {
           <div className="w-1/2">
             <img
               className="w-full"
-              src="/images/INI-FIRSTPAINTING.png"
+              src="/images/data-analytics.jpg"
               alt="test test"
             />
           </div>
           <div className="w-1/2">
-            <h3 className="text-2xl">test test tes</h3>
+            <h3 className="text-2xl">Detailed Analytics</h3>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-              vehiculm,
+              Stay on top of your links' performance and get insights into the
+              clicks you earn and people you reach.
+            </p>
+          </div>
+        </div>
+        <div className="flex justify-between gap-5 p-1 mt-2">
+          <div className="w-1/2">
+            <img className="w-full" src="/images/profile.png" alt="test test" />
+          </div>
+          <div className="w-1/2">
+            <h3 className="text-2xl">Fully Branded Domains</h3>
+            <p>
+              Customize every part of your links with branded domains — say
+              goodbye to default link shortening!
             </p>
           </div>
         </div>
@@ -23,15 +35,15 @@ function ExplainSection() {
           <div className="w-1/2">
             <img
               className="w-full"
-              src="/images/INI-FIRSTPAINTING.png"
+              src="/images/feature-3.webp"
               alt="test test"
             />
           </div>
           <div className="w-1/2">
-            <h3 className="text-2xl">test test tes</h3>
+            <h3 className="text-2xl">Bulk Short URLs</h3>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-              vehiculm,
+              Scale your communications with our API, and create thousands of
+              unique short links in the blink of an eye.
             </p>
           </div>
         </div>
@@ -39,53 +51,35 @@ function ExplainSection() {
           <div className="w-1/2">
             <img
               className="w-full"
-              src="/images/INI-FIRSTPAINTING.png"
+              src="/images/feature-4.webp"
               alt="test test"
             />
           </div>
           <div className="w-1/2">
-            <h3 className="text-2xl">test test tes</h3>
+            <h3 className="text-2xl">Link Management</h3>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-              vehiculm,
-            </p>
-          </div>
-        </div>
-        <div className="flex justify-between gap-5 p-1 mt-2">
-          <div className="w-1/2">
-            <img
-              className="w-full"
-              src="/images/INI-FIRSTPAINTING.png"
-              alt="test test"
-            />
-          </div>
-          <div className="w-1/2">
-            <h3 className="text-2xl">test test tes</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-              vehiculm,
-            </p>
-          </div>
-        </div>
-        <div className="flex justify-between gap-5 p-1 mt-2">
-          <div className="w-1/2">
-            <img
-              className="w-full"
-              src="/images/INI-FIRSTPAINTING.png"
-              alt="test test"
-            />
-          </div>
-          <div className="w-1/2">
-            <h3 className="text-2xl">test test tes</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-              vehiculm,
+              Take full control of your links: search, edit, and manage
+              thousands at a time from a convenient dashboard.
             </p>
           </div>
         </div>
       </section>
       <div className="w-full">
-        <img src="/images/INI-FIRSTPAINTING.png" alt="testtext" />
+        <img src="/images/random.jpg" alt="testtext" />
+        <div className="w-full text-center">
+          <h3 className="text-2xl">Link Shortening Done Quick and Easy</h3>
+          <p>
+            Our URL shortener is not only among the first-ever link shorteners
+            on the Internet — it's the best out there. Shorten links for social
+            media, blogs, SMS, emails, ads, and almost anything both off- and
+            online. Wave goodbye to long, clunky links and give your audiences
+            the experiences they deserve!
+          </p>
+          <div>
+            <button>Shorten a Link</button>
+            <button>Contact us</button>
+          </div>
+        </div>
       </div>
     </>
   );
