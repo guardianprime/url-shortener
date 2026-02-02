@@ -16,8 +16,8 @@ function Herosection() {
   }
 
   return (
-    <section className="h-full w-full bg-[#031f39] p-5">
-      <div className="text-white">
+    <section className="h-full w-full bg-[#031f39] p-5 lg:flex lg:justify-between lg:gap-2.5 lg:px-15 lg:py-10">
+      <div className="text-white lg:w-3/6">
         <h1 className="text-4xl font-bold">
           URL shortener, QR code and link analytics
         </h1>
@@ -46,31 +46,33 @@ function Herosection() {
           </button>
         </div>
       </div>
-      <div className="mt-5 text-white text-2xl flex h-15">
-        <button
-          className="w-3/5 rounded-t-xl h-full"
-          style={
-            formToggle
-              ? { backgroundColor: "#004799", color: "white" }
-              : { backgroundColor: "white", color: "black" }
-          }
-          onClick={() => setFormToggle(false)}
-        >
-          Shorten a Link
-        </button>
-        <button
-          className="w-2/5 rounded-t-xl h-full"
-          style={
-            formToggle
-              ? { backgroundColor: "white", color: "black" }
-              : { backgroundColor: "#004799", color: "white" }
-          }
-          onClick={() => setFormToggle(true)}
-        >
-          QR Code
-        </button>
+      <div className="lg:w-3/6">
+        <div className="mt-5 text-white text-2xl flex h-15">
+          <button
+            className="w-3/5 rounded-t-xl h-full"
+            style={
+              formToggle
+                ? { backgroundColor: "#004799", color: "white" }
+                : { backgroundColor: "white", color: "black" }
+            }
+            onClick={() => setFormToggle(false)}
+          >
+            Shorten a Link
+          </button>
+          <button
+            className="w-2/5 rounded-t-xl h-full"
+            style={
+              formToggle
+                ? { backgroundColor: "white", color: "black" }
+                : { backgroundColor: "#004799", color: "white" }
+            }
+            onClick={() => setFormToggle(true)}
+          >
+            QR Code
+          </button>
+        </div>
+        {formToggle ? <QrForm /> : <UrlForm />}
       </div>
-      {formToggle ? <QrForm /> : <UrlForm />}
     </section>
   );
 }

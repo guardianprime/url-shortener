@@ -73,7 +73,9 @@ export default function Hamburger({ home, about, signin, urlpage }) {
 
   return (
     <div className="flex items-center justify-between border-b border-gray-400 py-5 px-2 bg-sky-600">
-      <div className=" text-white p-1 font-[Open_Sans] text-lg">SMALLURL</div>
+      <div className=" text-white p-1 font-[Open_Sans] text-lg">
+        <Link to="/">SMALLURL</Link>
+      </div>
       <nav>
         <section className="MOBILE-MENU flex lg:hidden">
           <div
@@ -154,20 +156,20 @@ export default function Hamburger({ home, about, signin, urlpage }) {
             </ul>
           </div>
         </section>
-
+        {/* laptop navbar */}
         <ul className="DESKTOP-MENU hidden space-x-8 lg:flex">
-          <li>
+          <li className="border-b border-gray-400 font-extrabold text-white">
             <Link to="/about">About</Link>
           </li>
 
           {/* Show "My URLs" only if authenticated */}
           {isAuthenticated && (
-            <li>
+            <li className="border-b border-gray-400 font-extrabold text-white">
               <Link to="/myurls">My URLs</Link>
             </li>
           )}
 
-          <li>
+          <li className="border-b border-gray-400 font-extrabold text-white">
             {isAuthenticated ? (
               <div className="flex items-center space-x-4">
                 <span className="text-sm text-white">
