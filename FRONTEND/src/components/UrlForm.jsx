@@ -137,14 +137,14 @@ function UrlForm() {
           />
           <div className="flex justify-between w-2/3 mx-auto">
             <button
-              className="border-2 mt-7 p-2 rounded-sm hover:bg-gray-100 transition-colors"
+              className="border-2 mt-7 p-2 rounded-sm hover:bg-gray-100 hover:cursor-pointer transition-colors"
               onClick={handleCopy}
               type="button"
             >
               Copy
             </button>
             <button
-              className="border-2 mt-7 p-2 rounded-sm hover:bg-gray-100 transition-colors"
+              className="border-2 mt-7 p-2 rounded-sm hover:bg-gray-100 hover:cursor-pointer transition-colors"
               onClick={handleReset}
               type="button"
             >
@@ -180,7 +180,7 @@ function UrlForm() {
           <p className="text-sm italic">must be atleast 5 letters</p>
           <button
             onClick={handleSubmit}
-            className="bg-[#004799] text-white font-bold mt-7 p-2 rounded-sm block mx-auto hover:bg-gray-100 w-full"
+            className="bg-[#004799] text-white font-bold mt-7 p-2 rounded-sm block mx-auto hover:bg-[#033772]  hover:cursor-pointer w-full"
             disabled={loading}
           >
             {loading ? "Shortening..." : "Shorten URL"}

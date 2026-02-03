@@ -3,64 +3,70 @@ function ExplainSection() {
     <>
       <section className="p-5">
         <h1 className="text-3xl text-center">Our Services include</h1>
-        <div className="flex justify-between gap-5 p-1 mt-2">
-          <div className="w-1/2">
-            <img
-              className="w-full"
-              src="/images/data-analytics.jpg"
-              alt="test test"
-            />
+        <div className="lg:flex-row">
+          <div className="flex justify-between gap-5 p-1 mt-2">
+            <div className="w-1/2">
+              <img
+                className="w-full"
+                src="/images/data-analytics.jpg"
+                alt="test test"
+              />
+            </div>
+            <div className="w-1/2">
+              <h3 className="text-2xl">Detailed Analytics</h3>
+              <p>
+                Stay on top of your links' performance and get insights into the
+                clicks you earn and people you reach.
+              </p>
+            </div>
           </div>
-          <div className="w-1/2">
-            <h3 className="text-2xl">Detailed Analytics</h3>
-            <p>
-              Stay on top of your links' performance and get insights into the
-              clicks you earn and people you reach.
-            </p>
+          <div className="flex justify-between gap-5 p-1 mt-2">
+            <div className="w-1/2">
+              <img
+                className="w-full"
+                src="/images/profile.png"
+                alt="test test"
+              />
+            </div>
+            <div className="w-1/2">
+              <h3 className="text-2xl">Fully Branded Domains</h3>
+              <p>
+                Customize every part of your links with branded domains — say
+                goodbye to default link shortening!
+              </p>
+            </div>
           </div>
-        </div>
-        <div className="flex justify-between gap-5 p-1 mt-2">
-          <div className="w-1/2">
-            <img className="w-full" src="/images/profile.png" alt="test test" />
+          <div className="flex justify-between gap-5 p-1 mt-2">
+            <div className="w-1/2">
+              <img
+                className="w-full"
+                src="/images/feature-3.webp"
+                alt="test test"
+              />
+            </div>
+            <div className="w-1/2">
+              <h3 className="text-2xl">Bulk Short URLs</h3>
+              <p>
+                Scale your communications with our API, and create thousands of
+                unique short links in the blink of an eye.
+              </p>
+            </div>
           </div>
-          <div className="w-1/2">
-            <h3 className="text-2xl">Fully Branded Domains</h3>
-            <p>
-              Customize every part of your links with branded domains — say
-              goodbye to default link shortening!
-            </p>
-          </div>
-        </div>
-        <div className="flex justify-between gap-5 p-1 mt-2">
-          <div className="w-1/2">
-            <img
-              className="w-full"
-              src="/images/feature-3.webp"
-              alt="test test"
-            />
-          </div>
-          <div className="w-1/2">
-            <h3 className="text-2xl">Bulk Short URLs</h3>
-            <p>
-              Scale your communications with our API, and create thousands of
-              unique short links in the blink of an eye.
-            </p>
-          </div>
-        </div>
-        <div className="flex justify-between gap-5 p-1 mt-2">
-          <div className="w-1/2">
-            <img
-              className="w-full"
-              src="/images/feature-4.webp"
-              alt="test test"
-            />
-          </div>
-          <div className="w-1/2">
-            <h3 className="text-2xl">Link Management</h3>
-            <p>
-              Take full control of your links: search, edit, and manage
-              thousands at a time from a convenient dashboard.
-            </p>
+          <div className="flex justify-between gap-5 p-1 mt-2">
+            <div className="w-1/2">
+              <img
+                className="w-full"
+                src="/images/feature-4.webp"
+                alt="test test"
+              />
+            </div>
+            <div className="w-1/2">
+              <h3 className="text-2xl">Link Management</h3>
+              <p>
+                Take full control of your links: search, edit, and manage
+                thousands at a time from a convenient dashboard.
+              </p>
+            </div>
           </div>
         </div>
       </section>
