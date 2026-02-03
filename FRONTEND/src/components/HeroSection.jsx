@@ -16,7 +16,7 @@ function Herosection() {
   }
 
   return (
-    <section className="h-full w-full bg-[#031f39] p-5 lg:flex lg:justify-between lg:gap-2.5 lg:px-18 lg:py-10">
+    <section className="h-full w-full bg-[#031f39] p-5 lg:mt-10 lg:flex lg:justify-between lg:gap-2.5 lg:px-18 lg:py-10">
       <div className="text-white lg:w-120 lg:mt-13">
         <h1 className="text-4xl font-bold">
           URL Shortener, QR code and Link Analytics
