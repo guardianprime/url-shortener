@@ -129,7 +129,7 @@ function QrForm() {
           </div>
           <div className="flex justify-between w-2/3 mx-auto">
             <button
-              className="border-2 mt-7 p-2 rounded-sm hover:bg-gray-100 transition-colors"
+              className="border-2 mt-7 p-2 rounded-sm hover:bg-[#033772] hover:cursor-pointer transition-colors"
               onClick={handleReset}
               type="button"
             >
@@ -165,7 +165,7 @@ function QrForm() {
           <p className="italic text-sm">must be at least 5 letters</p>
           <button
             onClick={handleSubmit}
-            className="bg-[#004799] text-white w-full mt-7 p-2 rounded-sm block mx-auto hover:bg-gray-100 "
+            className="bg-[#004799] text-white w-full hover:cursor-pointer mt-7 p-2 rounded-sm block mx-auto hover:bg-[#033772] "
             disabled={loading}
           >
             {loading ? "Generating..." : "Generate QR code"}
