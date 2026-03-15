@@ -9,9 +9,9 @@
     "dev": "nodemon app.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "gordian okon",
   "license": "ISC",
-  "description": "",
+  "description": "url shortener backend api",
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",

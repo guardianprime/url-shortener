@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import UrlForm from "./UrlForm";
-import QrForm from "./qrForm";
+import QrForm from "./QrForm";
 
 function Herosection() {
   const navigate = useNavigate();
