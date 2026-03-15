@@ -72,7 +72,7 @@ export default function Hamburger({ home, about, signin, urlpage }) {
   };
 
   return (
-    <div className="flex items-center justify-between py-5 px-2 bg-sky-600 lg:h-15 lg:px-10">
+    <div className="flex items-center justify-between py-5 px-2 bg-sky-600 lg:h-15 lg:w-full lg:px-10 lg:fixed lg:top-0 lg:z-10">
       <div className=" text-white p-1 font-[Open_Sans] text-lg">
         <Link to="/">SMALLURL</Link>
       </div>

@@ -1,7 +1,7 @@
 function Footer() {
   return (
-    <footer className="h-1/4 w-full text-white text-lg p-5 bg-sky-600">
-      <div className="flex items-center justify-between">
+    <footer className="h-1/4 w-full text-white text-lg p-5 bg-sky-600 lg:flex justify-between">
+      <div className="flex items-center justify-between lg:w-1/3">
         <div>
           <h3>Legal</h3>
           <div className="flex-col">
@@ -34,30 +34,48 @@ function Footer() {
             </li>
           </ul>
         </div>
-      </div>
-      <div className="h-1/4 w-full flex justify-start flex-col">
-        <ul className="h-full w-1/2  flex justify-center gap-4 mt-2">
-          <li className="w-full">
-            <a href="https://github.com/guardianprime">
-              <i className="fa-brands fa-facebook-f"></i>
-            </a>
-          </li>
-          <li className="w-full">
-            <a href="https://x.com/guardianprime">
-              <i className="fa-brands fa-x-twitter"></i>
-            </a>
-          </li>
-          <li className="w-full">
-            <a href="https://linkedin.com/in/guardianprime">
-              <i className="fa-brands fa-linkedin-in"></i>
-            </a>
-          </li>
-        </ul>
-        <div className="w-1/2">
-          <h1>SMALLURL</h1>
+        <div>
+          <h3>Contact</h3>
+          <ul>
+            <li>
+              <a href="/about" className="hover:underline">
+                About
+              </a>
+            </li>
+            <li>
+              <a href="/contact" className="hover:underline">
+                Complaints
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
-      <p>© 2026 Url Shortener. All rights reserved.</p>
+      <div className="">
+        <div className="h-1/4 w-full flex justify-start flex-col lg:w-1/3">
+          <ul className="h-full w-1/2  flex justify-center gap-4 mt-2">
+            <li className="w-full">
+              <a href="https://github.com/guardianprime">
+                <i className="fa-brands fa-facebook-f"></i>
+              </a>
+            </li>
+            <li className="w-full">
+              <a href="https://x.com/guardianprime">
+                <i className="fa-brands fa-x-twitter"></i>
+              </a>
+            </li>
+            <li className="w-full">
+              <a href="https://linkedin.com/in/guardianprime">
+                <i className="fa-brands fa-linkedin-in"></i>
+              </a>
+            </li>
+          </ul>
+          <div className="w-1/2">
+            <h1>SMALLURL</h1>
+          </div>
+        </div>
+
+        <p>© 2026 Url Shortener. All rights reserved.</p>
+      </div>
     </footer>
   );
 }
